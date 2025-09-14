@@ -1,10 +1,6 @@
 # main links links
 main:
-  - title: "Waves and Bubbles"
-    url: /waves-and-bubbles/
+  # - title: "???"
+  #   url: /???/
 
-  - title: "Geometry"
-    url: /geometry/    
 
-  - title: "Differentiable Optimization"
-    url: /differentiable-optimization/    

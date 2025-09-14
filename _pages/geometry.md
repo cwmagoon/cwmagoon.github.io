@@ -1,4 +1,4 @@
----
+<!-- ---
 permalink: /geometry/
 title: 
 excerpt: 
@@ -7,4 +7,4 @@ redirect_from:
   - /geometry.html
 ---
 
-Example.
+Example. -->
