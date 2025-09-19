@@ -109,6 +109,7 @@ hide_footer: true
       <img src="/images/dQP_schematic.png" alt="dQP Schematic" style="width:100%; height:auto; display:block; margin-bottom:0.2rem;">
       <div style="margin-top:auto;">
         <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;">Magoon, Yang, Aigerman, Kovalsky</p>
+        <p style="margin:0; font-size:0.7rem; font-style:italic;">Accepted. NeurIPS (2025)</p>
         <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;"><a href="https://arxiv.org/pdf/2410.06324">Preprint</a> | Code Coming Soon </p>
       </div>
     </div>

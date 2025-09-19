@@ -124,6 +124,11 @@ include:
   - files
   - googleccfaee81dd6b922b.html # For indexing
   - favicon.ico
+  - apple-touch-icon.png
+  - android-chrome-192x192.png
+  - android-chrome-512x512.png
+  - favicon-32x32.png
+  - favicon-16x16.png
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
