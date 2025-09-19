@@ -123,6 +123,7 @@ include:
   - _pages
   - files
   - googleccfaee81dd6b922b.html # For indexing
+  - favicon.ico
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
