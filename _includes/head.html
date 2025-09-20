@@ -2,6 +2,15 @@
 
 <meta charset="utf-8">
 
+<!-- Favicons: this should be the only place needed... custom.html and about.md shouldn't need them -->
+
+<link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/android-chrome-512x512.png">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
 {% include seo.html %}
 
 <link href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ base_path }}/feed.xml{% endif %}" type="application/atom+xml" rel="alternate" title="{{ site.title }} Feed">
