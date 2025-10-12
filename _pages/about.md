@@ -69,7 +69,7 @@ hide_footer: true
       <h3 style="text-align:left; margin:0 0 0.2rem 0; font-size:0.85rem; font-family: 'Times New Roman', serif;">Galloping Bubbles</h3>
       <img src="/images/galloping_bubble.png" alt="Galloping Bubble" style="width:100%; height:auto; display:block; margin-bottom:0.2rem;">
       <div style="margin-top:auto;">
-        <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;">Guan, Tamim, Magoon, Stone, Sáenz<br> </p>
+        <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;">Guan<sup>*</sup>, Tamim<sup>*</sup>, Magoon<sup>*</sup>, Stone, Sáenz<br> </p>
         <p style="margin:0; font-size:0.7rem; font-style:italic;">Nature Communications (2025)</p>
         <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;"><a href="https://www.nature.com/articles/s41467-025-56611-5">Paper</a> | <a href="https://www.youtube.com/watch?v=gLbRx5nBpEo">Video</a></p>
       </div>
@@ -108,7 +108,7 @@ hide_footer: true
       <h3 style="text-align:left; margin:0 0 0.2rem 0; font-size:0.85rem; font-family: 'Times New Roman', serif;">dQP: Differentiating Quadratic Programs </h3>
       <img src="/images/dQP_schematic.png" alt="dQP Schematic" style="width:100%; height:auto; display:block; margin-bottom:0.2rem;">
       <div style="margin-top:auto;">
-        <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;">Magoon, Yang, Aigerman, Kovalsky</p>
+        <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;">Magoon<sup>*</sup>, Yang<sup>*</sup>, Aigerman, Kovalsky</p>
         <p style="margin:0; font-size:0.7rem; font-style:italic;">Accepted. NeurIPS (2025)</p>
         <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;"><a href="https://arxiv.org/pdf/2410.06324">Paper</a> | <a href="https://github.com/cwmagoon/dQP">Code</a> </p>
       </div>
