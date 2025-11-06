@@ -110,7 +110,7 @@ hide_footer: true
       <div style="margin-top:auto;">
         <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;">Magoon<sup>*</sup>, Yang<sup>*</sup>, Aigerman, Kovalsky</p>
         <p style="margin:0; font-size:0.7rem; font-style:italic;">Accepted. NeurIPS (2025)</p>
-        <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;"><a href="https://arxiv.org/pdf/2410.06324">Paper</a> | <a href="https://github.com/cwmagoon/dQP">Code</a> </p>
+        <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;"><a href="https://arxiv.org/pdf/2410.06324">Paper</a> | <a href="https://github.com/cwmagoon/dQP">Code</a> | <a href="https://neurips.cc/media/PosterPDFs/NeurIPS%202025/119180.png?t=1762316861.5409572">Poster</a> </p>
       </div>
     </div>
     <!-- Blank columns -->
