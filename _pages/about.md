@@ -109,8 +109,8 @@ hide_footer: true
       <img src="/images/dQP_schematic.png" alt="dQP Schematic" style="width:100%; height:auto; display:block; margin-bottom:0.2rem;">
       <div style="margin-top:auto;">
         <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;">Magoon<sup>*</sup>, Yang<sup>*</sup>, Aigerman, Kovalsky</p>
-        <p style="margin:0; font-size:0.7rem; font-style:italic;">Accepted. NeurIPS (2025)</p>
-        <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;"><a href="https://arxiv.org/pdf/2410.06324">Paper</a> | <a href="https://github.com/cwmagoon/dQP">Code</a> | <a href="https://neurips.cc/media/PosterPDFs/NeurIPS%202025/119180.png?t=1762316861.5409572">Poster</a> </p>
+        <p style="margin:0; font-size:0.7rem; font-style:italic;">NeurIPS (2025)</p>
+        <p style="margin:0; font-size:0.75rem; font-family: 'Times New Roman', serif;"><a href="https://arxiv.org/pdf/2410.06324">Paper</a> | <a href="https://github.com/cwmagoon/dQP">Code</a> | <a href="https://neurips.cc/media/PosterPDFs/NeurIPS%202025/119180.png?t=1762316861.5409572">Poster</a> | <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119180">Video</a> </p>
       </div>
     </div>
     <!-- Blank columns -->
