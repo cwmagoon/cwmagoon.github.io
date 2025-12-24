@@ -137,7 +137,7 @@ hide_footer: true
       <div class="img-container">
         <img src="/images/galloping_laws.png" alt="Faraday Waves" style="width:100%; height:auto; display:block; margin-bottom:0.2rem;">
         <div class="img-overlay">
-          A deep-dive experimental, numerical, and theoretical follow-up to our initial discovery of galloping bubbles, which are vertically vibrating millimetric-sized bubbles that spontaneously break symmetry and self-propel along a horizontal wall. At their heart is the parametric excitation of symmetrical and asymmetrical shape modes together generate a non-reciprocal deformation, enabling the bubble to `swim'.
+          A deep-dive experimental, numerical, and theoretical follow-up to our initial discovery of galloping bubbles, which are vertically vibrating millimetric-sized bubbles that spontaneously break symmetry and self-propel along a horizontal wall. At their heart is the parametric excitation of symmetrical and asymmetrical shape modes that together generate a non-reciprocal deformation, enabling the bubble to `swim'.
         </div>
       </div>
       <div style="margin-top:auto;">
