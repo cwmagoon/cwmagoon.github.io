@@ -206,7 +206,7 @@ if (isMobilePortrait) {
   <div>
     <h2 style="margin-top:0; font-size:1.3rem; font-family: 'Times New Roman', serif;">Connor Magoon</h2> 
     <p style="font-size:0.9rem; font-family: 'Times New Roman', serif;">
-    <a href="https://cwmagoon.github.io/files/cv.pdf">CV</a> | <a href="https://scholar.google.com/citations?user=18F4sZMAAAAJ&hl=en">Google Scholar</a> | <a href="https://orcid.org/0009-0009-1890-3279">ORCID</a> | <a href="https://github.com/cwmagoon">GitHub</a> | <a href="https://www.linkedin.com/in/connor-magoon-3189a9384">LinkedIn</a> <br>
+    <a href="https://cwmagoon.github.io/files/cv.pdf">CV</a> | <a href="https://scholar.google.com/citations?user=18F4sZMAAAAJ&hl=en">Google Scholar</a> | <a href="https://orcid.org/0009-0009-1890-3279">ORCID</a> | <a href="https://github.com/cwmagoon">GitHub</a> | <a href="https://www.linkedin.com/in/connor-magoon-3189a9384">LinkedIn</a> | connorwm (at) live.unc.edu <br>
       I am an Applied Mathematics PhD student at The University of North Carolina at Chapel Hill. <br>
       I have broad interests, spanning understanding physical phenomena to developing mathematical tools for solving applied problems. 
       One central thread sewn through all my work is geometry: leveraging simple geometry as a means for explanation and tackling complex geometry which is prevalent in the non-ideal real world. 
