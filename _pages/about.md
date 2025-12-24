@@ -120,9 +120,7 @@ document.addEventListener('click', () => {
     Projects
   </h2>
 
-  <p style="font-size:0.9rem; font-family: 'Times New Roman', serif; font-style:italic"> 
-    Hover over figures for project descriptions. <br>
-  </p>
+  
 
   <div style="
     width:30%;
@@ -130,6 +128,10 @@ document.addEventListener('click', () => {
     background:black;
     margin-bottom:1.2rem;
   "></div>
+
+  <p style="font-size:0.9rem; font-family: 'Times New Roman', serif; font-style:italic"> 
+    Hover over figures for project descriptions. 
+  </p>
 
   <!-- First row of panels (3 panels + 2 blank) -->
   <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem; gap:2%; align-items:flex-start;">
