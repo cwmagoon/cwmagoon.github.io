@@ -18,46 +18,67 @@ hide_footer: true
 <link rel="manifest" href="/images/site.webmanifest">
 
 <style>
-  a {
-    text-decoration: none;   /* removes underline */
-    color: #8A2BE2;          /* bright purple, you can change this hex */
-  }
-  a:hover {
-    text-decoration: underline; /* optional: show underline on hover */
-  }
+      a {
+        text-decoration: none;   /* removes underline */
+        color: #8A2BE2;          /* bright purple, you can change this hex */
+      }
+      a:hover {
+        text-decoration: underline; /* optional: show underline on hover */
+      }
 
-  /* --- Image hover overlay styles --- */
-  .img-container {
-    position: relative;
-    width: 100%;
-  }
+    /* --- Image hover/click overlay styles --- */
+    .img-container {
+      position: relative;
+      width: 100%;
+    }
+    
+    .img-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .img-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(40, 40, 40, 0.75);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.8rem;
+      font-size: 0.75rem;
+      font-family: 'Times New Roman', serif;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+    }
+    
+    /* Desktop hover */
+    .img-container:hover .img-overlay {
+      opacity: 1;
+    }
+    
+    /* Mobile / click */
+    .img-container.active .img-overlay {
+      opacity: 1;
+    }
 
-  .img-container img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .img-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(40, 40, 40, 0.75);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0.8rem;
-    font-size: 0.75rem;
-    font-family: 'Times New Roman', serif;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-  }
-
-  .img-container:hover .img-overlay {
-    opacity: 1;
-  }
 </style>
+
+<script>
+document.querySelectorAll('.img-container').forEach(el => {
+  el.addEventListener('click', e => {
+    e.stopPropagation();
+    el.classList.toggle('active');
+  });
+});
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.img-container.active')
+    .forEach(el => el.classList.remove('active'));
+});
+</script>
 
 <!-- Centered main content with tiny top space -->
 <div style="max-width: 70%; margin: 0.5rem auto 0 auto; font-family: 'Times New Roman', serif;">
@@ -73,7 +94,10 @@ hide_footer: true
         <p style="font-size:0.9rem; font-family: 'Times New Roman', serif;">
         <a href="https://cwmagoon.github.io/files/cv.pdf">CV</a> | <a href="https://scholar.google.com/citations?user=18F4sZMAAAAJ&hl=en">Google Scholar</a> | <a href="https://orcid.org/0009-0009-1890-3279">ORCID</a> | <a href="https://github.com/cwmagoon">GitHub</a> | <a href="https://www.linkedin.com/in/connor-magoon-3189a9384">LinkedIn</a> <br>
           I am an Applied Mathematics PhD student at The University of North Carolina at Chapel Hill. <br>
-          I have broad interests, spanning understanding physical phenomena to developing mathematical tools for solving applied problems. One central thread sewn through all my work is geometry: leveraging simple geometry as a means for explanation and tackling complex geometry which is prevelant in the non-ideal real world. I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me">Prof. Pedro Sáenz</a> and in the intersection of optimization, machine learning, and graphics with advisor <a href="https://shaharkov.github.io/">Prof. Shahar Kovalsky</a>. 
+          I have broad interests, spanning understanding physical phenomena to developing mathematical tools for solving applied problems. 
+          One central thread sewn through all my work is geometry: leveraging simple geometry as a means for explanation and tackling complex geometry which is prevalent in the non-ideal real world. 
+          I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me">Prof.Pedro Sáenz</a> 
+          and in the intersection of optimization, machine learning, and graphics with advisor <a href="https://shaharkov.github.io/">Prof. Shahar Kovalsky</a>. 
         </p>
       </div>
       
@@ -93,6 +117,8 @@ hide_footer: true
   ">
     Projects
   </h2>
+
+  Hover over figures for project descriptions.
 
   <div style="
     width:30%;
