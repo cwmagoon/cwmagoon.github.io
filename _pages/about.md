@@ -11,6 +11,8 @@ hide_header: true
 hide_footer: true
 ---
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <!-- Favicon links -->
 <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
@@ -118,7 +120,9 @@ document.addEventListener('click', () => {
     Projects
   </h2>
 
-  Hover over figures for project descriptions.
+  <p style="font-size:0.9rem; font-family: 'Times New Roman', serif; font-style:italic"> 
+    Hover over figures for project descriptions. <br>
+  </p>
 
   <div style="
     width:30%;
