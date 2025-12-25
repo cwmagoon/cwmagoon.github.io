@@ -210,7 +210,7 @@ if (isMobilePortrait) {
       I am an Applied Mathematics PhD student at The University of North Carolina at Chapel Hill. <br>
       I have broad interests, spanning understanding physical phenomena to developing mathematical tools for solving applied problems. 
       One central thread sewn through all my work is geometry: leveraging simple geometry as a means for explanation and tackling complex geometry which is prevalent in the non-ideal real world. 
-      I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me">Prof.Pedro Sáenz</a> 
+      I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me">Prof. Pedro Sáenz</a> 
       and in the intersection of optimization, machine learning, and graphics with advisor <a href="https://shaharkov.github.io/">Prof. Shahar Kovalsky</a>. 
     </p>
   </div>
