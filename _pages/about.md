@@ -209,8 +209,8 @@ if (isMobilePortrait) {
     <a href="https://cwmagoon.github.io/files/cv.pdf">CV</a> | <a href="https://scholar.google.com/citations?user=18F4sZMAAAAJ&hl=en">Google Scholar</a> | <a href="https://orcid.org/0009-0009-1890-3279">ORCID</a> | <a href="https://github.com/cwmagoon">GitHub</a> | <a href="https://www.linkedin.com/in/connor-magoon-3189a9384">LinkedIn</a> | connorwm (at) live.unc.edu <br>
       I am an Applied Mathematics PhD student at The University of North Carolina at Chapel Hill. <br>
       I have broad interests, spanning understanding physical phenomena to developing mathematical tools for solving applied problems. 
-      One central thread sewn through all my work is geometry: leveraging simple geometry as a means for explanation and tackling complex geometry which is prevalent in the non-ideal real world. 
-      I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me">Prof. Pedro Sáenz</a> 
+      One central thread sewn through all my work is geometry: leveraging simple geometry as a means for explanation, and tackling complex geometry which is prevalent in the non-ideal real world. 
+      I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me">Prof. Pedro Sáenz</a>, 
       and in the intersection of optimization, machine learning, and graphics with advisor <a href="https://shaharkov.github.io/">Prof. Shahar Kovalsky</a>. 
     </p>
   </div>
