@@ -422,7 +422,31 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
     <img src="/images/dQP_performance.png" class="clickable-figure">
   </a>
 </div>
+
+<div style="display: inline-flex; align-items: center; gap:0.5rem; margin-top:0.5rem;">
+  <!-- Left text -->
+  <div style="font-size:0.85rem; white-space: nowrap; flex-shrink:0;">
+    Packaged by PyPI. Installation command:
+  </div>
+
+  <!-- Code box -->
+  <pre style="
+      display:inline-block;
+      background: #f6f8fa; 
+      border: 1px solid #ddd;
+      padding: 0.3rem 0.6rem; 
+      border-radius: 6px; 
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; 
+      font-size: 0.85rem; 
+      overflow-x: auto;
+      margin:0;
+      line-height:1.2;
+  "><code>pip install libdqp</code></pre>
 </div>
+
+</div>
+
+
 
 
 
