@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div style="background:#cce5ff; color:#004085; border-radius:10px; padding:0.6rem 0.8rem; font-size:0.85rem; line-height:1.3; border: 1px solid #99ccff;">
         <p style="margin:0.3rem 0 0.3rem 0;"> I am an Applied Mathematics PhD student at UNC Chapel Hill. </p>
         I have broad interests, spanning understanding physical phenomena to developing mathematical tools for solving applied problems. One central thread sewn through all my work is geometry: leveraging simple geometry as a means for explanation, and tackling complex geometry which is prevalent in the non-ideal real world. 
-        I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me">Prof. Pedro Sáenz</a>, and in the intersection of optimization, machine learning, and graphics with advisor <a href="https://shaharkov.github.io/">Prof. Shahar Kovalsky</a>.
+        I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/" target="_blank">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me" target="_blank">Prof. Pedro Sáenz</a>, and in the intersection of optimization, machine learning, and graphics with advisor <a href="https://shaharkov.github.io/" target="_blank">Prof. Shahar Kovalsky</a>.
       </div>
 
       
@@ -238,11 +238,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <a class="pill-blue" href="#about">About</a>
         <a class="pill-blue" href="#research">Research</a>
         <a class="pill-blue" href="#code">Code</a>
-        <a class="pill" href="https://cwmagoon.github.io/files/cv.pdf">CV</a>
-        <a class="pill" href="https://scholar.google.com/citations?user=18F4sZMAAAAJ&hl=en">Google Scholar</a>
-        <a class="pill" href="https://orcid.org/0009-0009-1890-3279">ORCID</a>
-        <a class="pill" href="https://github.com/cwmagoon">GitHub</a>
-        <a class="pill" href="https://www.linkedin.com/in/connor-magoon-3189a9384">LinkedIn</a>
+        <a class="pill" href="https://cwmagoon.github.io/files/cv.pdf" target="_blank">CV</a>
+        <a class="pill" href="https://scholar.google.com/citations?user=18F4sZMAAAAJ&hl=en" target="_blank">Google Scholar</a>
+        <a class="pill" href="https://orcid.org/0009-0009-1890-3279" target="_blank">ORCID</a>
+        <a class="pill" href="https://github.com/cwmagoon" target="_blank">GitHub</a>
+        <a class="pill" href="https://www.linkedin.com/in/connor-magoon-3189a9384" target="_blank">LinkedIn</a>
         <a class="pill">connorwm (at) live.unc.edu</a>
       </div>
 
@@ -354,10 +354,10 @@ dQP is a modular framework for differentiating the solution to a quadratic progr
 <p class="authors">Magoon*, Yang*, Aigerman, Kovalsky</p>
 <p class="venue">NeurIPS (2025)</p>
 <div class="links pill-links">
-<a class="pill" href="https://arxiv.org/pdf/2410.06324">Paper</a>
-<a class="pill" href="https://github.com/cwmagoon/dQP">Code</a>
-<a class="pill" href="https://neurips.cc/media/PosterPDFs/NeurIPS%202025/119180.png?t=1762316861">Poster</a>
-<a class="pill" href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119180">Video</a>
+<a class="pill" href="https://arxiv.org/pdf/2410.06324" target="_blank">Paper</a>
+<a class="pill" href="https://github.com/cwmagoon/dQP" target="_blank">Code</a>
+<a class="pill" href="https://neurips.cc/media/PosterPDFs/NeurIPS%202025/119180.png?t=1762316861" target="_blank">Poster</a>
+<a class="pill" href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119180" target="_blank">Video</a>
 </div>
 </div>
 
@@ -373,9 +373,9 @@ We discover, rationalize, and apply a fluid instability in which a vertically vi
 <p class="authors">Guan*, Tamim*, Magoon*, Stone, Sáenz</p>
 <p class="venue">Nature Communications (2025)</p>
 <div class="links pill-links">
-<a class="pill" href="https://www.nature.com/articles/s41467-025-56611-5">Paper</a>
-<a class="pill" href="https://doi.org/10.1103/fbdh-fnzv">Gallery Paper</a>
-<a class="pill" href="https://www.youtube.com/watch?v=gLbRx5nBpEo">Video</a>
+<a class="pill" href="https://www.nature.com/articles/s41467-025-56611-5" target="_blank">Paper</a>
+<a class="pill" href="https://doi.org/10.1103/fbdh-fnzv" target="_blank">Gallery Paper</a>
+<a class="pill" href="https://www.youtube.com/watch?v=gLbRx5nBpEo" target="_blank">Video</a>
 </div>
 </div>
 
@@ -391,8 +391,8 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 <p class="authors">Guan, Magoon, Durey, Camassa, Sáenz</p>
 <p class="venue">Physical Review Fluids (2023)</p>
 <div class="links pill-links">
-<a class="pill" href="https://journals.aps.org/prfluids/abstract/10.1103/PhysRevFluids.8.110501">Gallery Paper</a>
-<a class="pill" href="https://www.youtube.com/watch?v=0d_D6yvXAFo">Video</a>
+<a class="pill" href="https://journals.aps.org/prfluids/abstract/10.1103/PhysRevFluids.8.110501" target="_blank">Gallery Paper</a>
+<a class="pill" href="https://www.youtube.com/watch?v=0d_D6yvXAFo" target="_blank">Video</a>
 </div>
 </div>
 
