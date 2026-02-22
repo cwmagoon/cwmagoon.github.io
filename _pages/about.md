@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <!-- About Box -->
       <div style="background:#cce5ff; color:#004085; border-radius:10px; padding:0.6rem 0.8rem; font-size:0.85rem; line-height:1.3; border: 1px solid #99ccff;">
-        <p style="margin:0.3rem 0 0.3rem 0;"> I am a third-year Applied Mathematics PhD student at UNC Chapel Hill. </p>
+        <p style="margin:0.3rem 0 0.3rem 0;"> I am a third-year Applied Mathematics PhD student at UNC Chapel Hill. Previously, I received my B.S. in physics and applied math. </p>
         I have broad interests, spanning understanding physical phenomena to developing mathematical tools for solving applied problems. One central thread sewn through all my work is geometry: leveraging simple geometry as a means for explanation, and tackling complex geometry which is prevalent in the non-ideal real world. 
         I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/" target="_blank">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me" target="_blank">Prof. Pedro Sáenz</a>, and in the intersection of optimization, machine learning, and graphics with advisor <a href="https://shaharkov.github.io/" target="_blank">Prof. Shahar Kovalsky</a>.
       </div>
