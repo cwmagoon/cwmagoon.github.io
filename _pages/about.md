@@ -199,6 +199,26 @@ hide_footer: true
     display: none;
   }
 
+  /* Status badges */
+  .project-card {
+    position: relative;
+  }
+
+  .figure-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.8rem;
+    border-radius: 999px;
+    background: #e6dbff;
+    color: #4b2ca3;
+    border: 1px solid #d1c2ff;
+    display: inline-block;
+    z-index: 50;
+    transform: translate(50%, -50%);
+  }
+
   /* Modal overlay */
   .modal-overlay {
     display: none;
@@ -260,6 +280,16 @@ hide_footer: true
   .modal-desc { margin-bottom: 0.6rem; }
   .modal-equal { font-size: 0.75rem; font-style: italic; color: #888; margin-top: 0.5rem; }
   .modal-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+
+  /* Three-part series authors grid */
+  .series-authors {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.05rem 0;
+    font-size: 0.75rem;
+    margin: 0.25rem 0 0 0;
+  }
+  .series-authors .label { font-style: normal; }
 </style>
 
 <div class="modal-overlay" id="desc-modal">
@@ -290,9 +320,9 @@ hide_footer: true
 
   <!-- Left column: Name + About + Pills -->
   <div style="flex:2; min-width:250px;" id="left-column-wrapper">
-    <div style="display:flex; flex-direction:column; gap:0.5rem;" id="left-column">
+    <div style="display:flex; flex-direction:column; gap:1.2rem;" id="left-column">
 
-      <div style="display: flex; align-items: center; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 0.5rem;">
       <!-- Name -->
       <h1 style="margin:0; font-size:2rem;">Connor Magoon</h1>
       </div>
@@ -362,8 +392,9 @@ hide_footer: true
 <h3>Collective Galloping Bubbles</h3>
 <div class="figure-with-text">
 <img src="/images/collective_bubbles_flow.png" class="clickable-figure">
-<div class="figure-text">Ongoing work</div>
+<div class="figure-text"></div>
 </div>
+<div class="figure-badge">Ongoing</div>
 <p class="authors">Magoon, Liu, Guan, Tamim, Stone, Sáenz</p>
 </div>
 
@@ -372,8 +403,9 @@ hide_footer: true
 <h3>Neural Mappings</h3>
 <div class="figure-with-text">
 <img src="/images/ant_mapping.png" class="clickable-figure">
-<div class="figure-text">Ongoing work</div>
+<div class="figure-text"></div>
 </div>
+<div class="figure-badge">Ongoing</div>
 <p class="authors">Magoon, Yang, Aigerman, Kovalsky</p>
 </div>
 
@@ -386,12 +418,17 @@ hide_footer: true
 A deep-dive experimental, numerical, and theoretical follow-up to our initial discovery of galloping bubbles, which are vertically vibrating millimetric-sized bubbles that spontaneously break symmetry and self-propel along a horizontal wall. At their heart is the parametric excitation of symmetrical and asymmetrical shape modes that together generate a non-reciprocal deformation, enabling the bubble to `swim'.
 </div>
 </div>
-<p class="authors" style="line-height:1.6;">
-<span>Experiments:</span> Guan et al.<br>
-<span>Simulations:</span> Magoon et al.<br>
-<span>Theory:</span> Tamim et al.
-</p>
-<p class="venue"><b>Coming soon</b></p>
+<div class="figure-badge">Coming soon</div>
+<div class="authors">
+  <div class="series-authors">
+    <span class="label">Experiments:</span>
+    <span class="label">Simulations:</span>
+    <span class="label">Theory:</span>
+    <span>Guan et al.</span>
+    <span>Magoon et al.</span>
+    <span>Tamim et al.</span>
+  </div>
+</div>
 </div>
 
 <!-- dQP -->
@@ -475,25 +512,22 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
   </a>
 </div>
 
-<div style="display: inline-flex; align-items: center; gap:0.5rem; margin-top:0.5rem;">
-  <!-- Left text -->
-  <div style="font-size:0.85rem; white-space: nowrap; flex-shrink:0;">
-    Packaged by PyPI. Installation command:
-  </div>
-
-  <!-- Code box -->
+<div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; align-items: center;">
   <pre style="
-      display:inline-block;
-      background: #f6f8fa; 
+      display: block;
+      background: #f6f8fa;
       border: 1px solid #ddd;
-      padding: 0.3rem 0.6rem; 
-      border-radius: 6px; 
-      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; 
-      font-size: 0.85rem; 
-      overflow-x: auto;
-      margin:0;
-      line-height:1.2;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+      font-size: 0.85rem;
+      margin: 0;
+      line-height: 1.2;
+      width: fit-content;
   "><code>pip install libdqp</code></pre>
+  <div style="font-size:0.8rem; text-align: center;">
+    Packaged by <a href="https://pypi.org/project/libdqp/" target="_blank" style="color:#004085; text-decoration:underline; text-decoration-color:#99ccff; text-underline-offset:2px;">PyPI</a>
+  </div>
 </div>
 
 </div>

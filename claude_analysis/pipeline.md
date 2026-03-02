@@ -1,34 +1,18 @@
 # Website Analysis Pipeline
 
-## Steps
+## Workflow
 
-1. **Serve locally** — `bundle exec jekyll serve -l -H localhost` to build and host the site at `http://localhost:4000`.
-2. **Screenshot capture** — Always capture a full-page screenshot (no browser chrome) using headless Chromium:
-   ```
-   chromium-browser --headless --disable-gpu --no-sandbox \
-     --screenshot=claude_analysis/claude_captures/screenshot_<DATE>.png \
-     --window-size=1440,5000 http://localhost:4000
-   ```
-3. **Read source** — Read `_pages/about.md`, `_config.yml`, `_data/navigation.yml`, layouts, and includes to understand the full rendering pipeline.
-4. **Visual + source analysis** — Review the screenshots (Claude can read images) alongside the source. Assess:
-   - Layout, typography, spacing, visual hierarchy
-   - Content completeness (sections expected on an academic site)
-   - UX patterns (interactions, responsiveness)
-   - SEO/meta/accessibility
-   - Code quality and dead code
-5. **Write suggestions** — Save a dated Markdown report to `claude_analysis/claude_suggestions/` with:
-   - What's working well
-   - Numbered suggestions with rationale, code examples, and priority ranking
-6. **Stop server** — `pkill -f "jekyll serve"`.
-7. **Implement (if requested)** — Apply approved suggestions, then re-serve for evaluation.
+1. **Serve** — `bundle exec jekyll serve -l -H localhost`
+2. **Screenshot** — Capture full-page screenshot with headless Chromium to `claude_analysis/claude_captures/screenshot_<DATE>.png` (1440x5000)
+3. **Analyze** — Read source (`_pages/about.md`, layouts, includes) and review screenshots
+4. **Listen** — Get user feedback and specific suggestions
+5. **Implement** — Apply changes to `_pages/about.md` (only file to edit for content)
+6. **Re-serve** — Start server again for user validation
+7. **Stop** — `pkill -f "jekyll serve"`
 
-## Folder Structure
+## Notes
 
-```
-claude_analysis/
-├── pipeline.md              # This file
-├── claude_captures/          # Headless Chromium screenshots
-│   └── screenshot_2026-03-01.png
-└── claude_suggestions/       # Dated review documents
-    └── website_review_2026-03-01.md
-```
+- Only edit `_pages/about.md` for content/layout changes (all styling/structure is inline)
+- **Text/phrasing**: Do not edit words or content without explicit permission—only formatting/spacing changes are freely allowed
+- Screenshots go to `claude_analysis/claude_captures/`
+- Reports go to `claude_analysis/claude_suggestions/`

@@ -49,6 +49,17 @@ This is a single-page site. The website content lives in `_pages/about.md`.
 - `_pages/about.md` is effectively the entire site.
 
 **Mental model for Claude:** Focus edits on `_pages/about.md`. Everything else supports building, styling, or provides assets. Only serve locally at the very end for debugging.
+
+## Pipeline Permissions
+
+The following bash commands are pre-approved for the analysis/development workflow:
+
+- `bundle exec jekyll serve -l -H localhost` — Start local dev server
+- `chromium-browser --headless --disable-gpu --no-sandbox --screenshot=...` — Capture screenshots for analysis
+- `pkill -f "jekyll serve"` — Stop the dev server
+- `sleep <N>` — Brief pauses between commands
+- `git status`, `git diff`, `git log` — View repository state (read-only)
+- Creating commits and pushing changes (when explicitly requested)
 """
 
 with open("CLAUDE.md", "w", encoding="utf-8") as f:
