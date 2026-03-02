@@ -1,3 +1,10 @@
+The key command for debugging:
+bundle exec jekyll serve -l -H localhost
+
+-------------------------------------------------------------------------------------------
+Snippet from the instructions I used:
+
+
 Used WSL, tested locally before pushing.
 
 Followed these instructions from https://github.com/academicpages/academicpages.github.io/blob/master/README.md
