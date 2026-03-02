@@ -1,7 +1,6 @@
 ---
 permalink: /
-title: "Connor Magoon — Applied Mathematics PhD, UNC Chapel Hill"
-excerpt: "Connor Magoon is an Applied Mathematics PhD student at UNC Chapel Hill researching fluid dynamics, geometry, optimization, and machine learning."
+excerpt: "Connor Magoon is an Applied Mathematics PhD student at UNC Chapel Hill."
 author_profile: false
 redirect_from: 
   - /about/
@@ -175,9 +174,9 @@ hide_footer: true
   }
 
   .project-card h3 {
-    font-size: 0.9rem;
-    margin: 0 0 0.2rem 0;
-    font-weight: normal;
+    font-size: 0.95rem;
+    margin: 0 0 0.4rem 0;
+    font-weight: bold;
   }
 
   /* Clickable figures */
@@ -276,59 +275,7 @@ hide_footer: true
   </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById('desc-modal');
-  const modalImg = document.getElementById('modal-img');
-  const modalTitle = document.getElementById('modal-title');
-  const modalAuthors = document.getElementById('modal-authors');
-  const modalVenue = document.getElementById('modal-venue');
-  const modalText = document.getElementById('modal-text');
-  const modalEqual = document.getElementById('modal-equal');
-  const modalPills = document.getElementById('modal-pills');
-  const closeBtn = modal.querySelector('.modal-close');
-
-  document.querySelectorAll('.figure-with-text').forEach(el => {
-    const img = el.querySelector('img');
-    const text = el.querySelector('.figure-text');
-    if (!img || !text) return;
-    img.addEventListener('click', e => {
-      e.preventDefault();
-      e.stopPropagation();
-      const card = el.closest('.project-card');
-      modalImg.src = img.src;
-      modalImg.alt = img.alt || '';
-      modalText.innerHTML = text.innerHTML;
-      // Title
-      const h3 = card ? card.querySelector('h3') : null;
-      modalTitle.textContent = h3 ? h3.textContent : '';
-      // Authors
-      const authors = card ? card.querySelector('.authors') : null;
-      modalAuthors.innerHTML = authors ? authors.innerHTML : '';
-      // Venue
-      const venue = card ? card.querySelector('.venue') : null;
-      modalVenue.innerHTML = venue ? venue.innerHTML : '';
-      modalVenue.style.display = venue ? '' : 'none';
-      // Equal contribution
-      const hasEqual = authors && authors.innerHTML.includes('sup');
-      modalEqual.style.display = hasEqual ? '' : 'none';
-      // Pills
-      const links = card ? card.querySelector('.links.pill-links') : null;
-      modalPills.innerHTML = links ? links.innerHTML : '';
-      modalPills.style.display = links ? '' : 'none';
-      modal.classList.add('active');
-    });
-  });
-
-  closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-  modal.addEventListener('click', e => {
-    if (e.target === modal) modal.classList.remove('active');
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') modal.classList.remove('active');
-  });
-});
-</script>
+<script src="/assets/js/modal.js"></script>
 
 <div class="main-wrap">
 
@@ -440,9 +387,9 @@ A deep-dive experimental, numerical, and theoretical follow-up to our initial di
 </div>
 </div>
 <p class="authors" style="line-height:1.6;">
-<span style="color:#888;">Experiments:</span> Guan et al.<br>
-<span style="color:#888;">Simulations:</span> Magoon et al.<br>
-<span style="color:#888;">Theory:</span> Tamim et al.
+<span>Experiments:</span> Guan et al.<br>
+<span>Simulations:</span> Magoon et al.<br>
+<span>Theory:</span> Tamim et al.
 </p>
 <p class="venue"><b>Coming soon</b></p>
 </div>
