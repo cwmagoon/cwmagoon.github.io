@@ -350,7 +350,7 @@ hide_footer: true
         <a class="pill" href="https://orcid.org/0009-0009-1890-3279" target="_blank">ORCID</a>
         <a class="pill" href="https://github.com/cwmagoon" target="_blank">GitHub</a>
         <a class="pill" href="https://www.linkedin.com/in/connor-magoon-3189a9384" target="_blank">LinkedIn</a>
-        <a class="pill">connorwm (at) live.unc.edu</a>
+        <a class="pill" id="email-pill" style="cursor:pointer;" onclick="(function(el){navigator.clipboard.writeText('connorwm@live.unc.edu').then(function(){var orig=el.textContent;el.textContent='Copied!';setTimeout(function(){el.textContent=orig;},1500);});return false;})(this)">connorwm (at) live.unc.edu</a>
       </div>
 
     </div>
