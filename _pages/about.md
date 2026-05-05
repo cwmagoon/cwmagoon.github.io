@@ -443,7 +443,7 @@ dQP is a modular framework for differentiating the solution to a quadratic progr
 <p class="authors">Magoon<sup>*</sup>, Yang<sup>*</sup>, Aigerman, Kovalsky</p>
 <p class="venue">NeurIPS (2025)</p>
 <div class="links pill-links">
-<a class="pill" href="https://arxiv.org/pdf/2410.06324" target="_blank">Paper</a>
+<a class="pill" href="https://papers.nips.cc/paper_files/paper/2025/file/9bd9aa8c2326b67321eb1f5f281ba618-Paper-Conference.pdf" target="_blank">Paper</a>
 <a class="pill" href="https://github.com/cwmagoon/dQP" target="_blank">Code</a>
 <a class="pill" href="https://neurips.cc/media/PosterPDFs/NeurIPS%202025/119180.png?t=1762316861" target="_blank">Poster</a>
 <a class="pill" href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119180" target="_blank">Video</a>
