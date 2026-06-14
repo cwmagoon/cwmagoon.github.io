@@ -3,3 +3,4 @@ _site/
 .vendor/*
 vendor
 .idea
+hidden/
