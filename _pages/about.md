@@ -34,20 +34,20 @@ hide_footer: true
   }
 
   .main-wrap {
-    max-width: 70%;
-    margin: 0.5rem auto 2rem auto;
+    max-width: 60%;
+    margin: 0.25rem auto 1rem auto;
   }
 
   .section {
-    padding: 1.5rem;
-    margin: 2rem 0;
+    padding: 0.75rem;
+    margin: 1rem 0;
     border-radius: 14px;
     background: #f3f3f3;
   }
 
   .section-header {
-    padding: 1.5rem;
-    margin: 2rem 0 2.5rem 0;
+    padding: 0.75rem;
+    margin: 1rem 0 1.25rem 0;
     border-radius: 14px;
     background: #f0f6ff;
     border-left: 4px solid #004085;
@@ -151,13 +151,12 @@ hide_footer: true
     gap: 1.5rem;
   }
 
-  @media (max-width: 1000px) {
-    .projects-grid { grid-template-columns: repeat(2, 1fr); }
-    .main-wrap { max-width: 85%; }
+  @media (max-width: 1400px) {
+    .projects-grid { grid-template-columns: 1fr; }
+    .main-wrap { max-width: 80%; }
   }
 
   @media (max-width: 600px) {
-    .projects-grid { grid-template-columns: 1fr; }
     .main-wrap { max-width: 95%; }
     .header-grid { grid-template-columns: 1fr; }
   }
@@ -179,12 +178,14 @@ hide_footer: true
 
   .project-card h3 {
     font-family: Helvetica, Arial, sans-serif !important;
-    font-size: clamp(0.6rem, 4.5cqi, 0.9rem);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 0.9rem; /* JS will override this dynamically */
     margin: 0 0 0.4rem 0;
     font-weight: bold;
+    line-height: 1.3;
+    white-space: normal;
+    overflow-wrap: break-word;
+    overflow: visible;
+    text-overflow: clip;
   }
 
   /* Clickable figures */
@@ -282,6 +283,23 @@ hide_footer: true
   .venue, .series-venue { font-size: 0.7rem; font-style: italic; margin: 0; }
   .links { margin-top: auto; padding-top: 0.5rem; }
 
+  .project-card .links.pill-links {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  /* Scale text only when a card is narrower than 260px (window squished) */
+  @container (max-width: 260px) {
+    .authors,
+    .series-authors { font-size: clamp(0.45rem, 4.5cqi, 0.75rem); }
+    .venue, .series-venue { font-size: clamp(0.4rem, 4.2cqi, 0.7rem); }
+    .pill, .pill-blue {
+      font-size: clamp(0.4rem, 4.8cqi, 0.8rem);
+      padding: 0.25rem clamp(0.2rem, 3.8cqi, 0.65rem);
+      white-space: nowrap;
+    }
+  }
+
   .modal-title { font-size: 1.1rem; font-weight: bold; margin: 0 0 0.4rem 0; }
   .modal-authors { font-size: 0.85rem; margin: 0 0 0.2rem 0; color: #444; }
   .modal-venue { font-size: 0.8rem; font-style: italic; margin: 0 0 0.6rem 0; color: #666; }
@@ -289,16 +307,38 @@ hide_footer: true
   .modal-equal { font-size: 0.75rem; font-style: italic; color: #888; margin-top: 0.5rem; }
   .modal-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
 
+  /* Series parts copied into the modal lose their flex parent, so lay
+     them out as spaced inline blocks (name over its own "Submitted"). */
+  .modal-authors .series-part {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 1.4rem;
+  }
+  .modal-authors .series-part:last-child { margin-right: 0; }
+  .modal-authors .series-part .series-venue { color: #666; }
+
   /* Three-part series authors grid */
   .series-authors {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.05rem 0;
     font-size: 0.75rem;
     margin: 0.25rem 0 0 0;
   }
   .series-authors .label { font-style: normal; }
   #research .series-authors .label { display: none; }
+
+  /* Three-part series: each "Name + Submitted" is one non-breaking block
+     that wraps as a whole unit, so names never split mid-phrase. */
+  .series-parts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1rem;
+  }
+  .series-part {
+    white-space: nowrap;
+    line-height: 1.3;
+  }
 </style>
 
 <div class="modal-overlay" id="desc-modal">
@@ -435,8 +475,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- Research -->
 <div class="section" id="research">
-<h2>Research</h2>
-<p style="font-style:italic; font-size:0.85rem;">Click figures for project descriptions.</p>
+<div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.5rem;">
+<h2 style="margin-bottom:0;">Research</h2>
+<span style="font-style:italic; font-size:0.85rem; white-space:nowrap;">Click figures for project descriptions.</span>
+</div>
 
 <div class="projects-grid">
 
@@ -444,23 +486,15 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="project-card">
 <h3>Galloping Bubbles: Three-Part Series</h3>
 <div class="figure-with-text">
-<img src="/images/galloping_laws.png" class="clickable-figure">
+<img src="/images/galloping_laws.png" class="clickable-figure" style="border-radius:0;">
 <div class="figure-text">
 A deep-dive experimental, numerical, and theoretical follow-up to our initial discovery of galloping bubbles, which are vertically vibrating millimetric-sized bubbles that spontaneously break symmetry and self-propel along a horizontal wall. At their heart is the parametric excitation of symmetrical and asymmetrical shape modes that together generate a non-reciprocal deformation, enabling the bubble to `swim'.
 </div>
 </div>
-<div class="authors">
-  <div class="series-authors">
-    <span class="label">Experiments:</span>
-    <span class="label">Simulations:</span>
-    <span class="label">Theory:</span>
-    <span>Guan et al.</span>
-    <span>Magoon et al.</span>
-    <span>Tamim et al.</span>
-    <span class="series-venue">Submitted</span>
-    <span class="series-venue">Submitted</span>
-    <span class="series-venue">Submitted</span>
-  </div>
+<div class="authors series-parts">
+  <span class="series-part">Guan et al.<br><span class="series-venue">Submitted</span></span>
+  <span class="series-part">Magoon et al.<br><span class="series-venue">Submitted</span></span>
+  <span class="series-part">Tamim et al.<br><span class="series-venue">Submitted</span></span>
 </div>
 <div class="links pill-links">
 <span class="pill">Coming soon</span>
@@ -471,7 +505,7 @@ A deep-dive experimental, numerical, and theoretical follow-up to our initial di
 <div class="project-card">
 <h3>dQP: Differentiating Quadratic Programs</h3>
 <div class="figure-with-text">
-<img src="/images/dQP_schematic.png" class="clickable-figure">
+<img src="/images/dQP_schematic.png" class="clickable-figure" style="border-radius:0;">
 <div class="figure-text">
 dQP is a modular framework for differentiating the solution to a quadratic programming problem (QP) with respect to its parameters, enabling the seamless integration of QPs into machine learning architectures and bilevel optimization. dQP supports over 15 state-of-the-art QP solvers.
 </div>
@@ -559,9 +593,10 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 
 
 <div class="section" id="code">
-<h2>Code</h2>
-
-<p style="font-style:italic; font-size:0.85rem;">Click figures for project repositories.</p>
+<div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.5rem;">
+<h2 style="margin-bottom:0;">Code</h2>
+<span style="font-style:italic; font-size:0.85rem; white-space:nowrap;">Click figures for project repositories.</span>
+</div>
 
 <div class="projects-grid">
 
@@ -609,6 +644,66 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 
 
 
+
+
+<script>
+(function () {
+  function fitCardHeaders() {
+    var headers = Array.from(document.querySelectorAll('.project-card h3'));
+    if (!headers.length) return;
+
+    headers.forEach(function (h) {
+      h.style.whiteSpace = 'nowrap';
+      h.style.fontSize = '';
+    });
+
+    var sizes = headers.map(function (h) {
+      var card = h.closest('.project-card');
+      var cs = getComputedStyle(card);
+      var available = card.clientWidth
+        - parseFloat(cs.paddingLeft)
+        - parseFloat(cs.paddingRight);
+
+      /* hi is large so the search can grow the font to fill the card width
+         (not just shrink to fit). In multi-column the title overflows well
+         below this and shrinks as before; in single-column the wide card lets
+         it scale up so the title still stretches the full width. */
+      var lo = 6, hi = 200;
+      h.style.fontSize = hi + 'px';
+      if (h.scrollWidth <= available) return hi;
+
+      while (hi - lo > 0.25) {
+        var mid = (lo + hi) / 2;
+        h.style.fontSize = mid + 'px';
+        if (h.scrollWidth <= available) lo = mid; else hi = mid;
+      }
+      return lo;
+    });
+
+    var uniformSize = Math.min.apply(null, sizes);
+
+    headers.forEach(function (h) {
+      h.style.fontSize = uniformSize + 'px';
+      h.style.whiteSpace = '';
+    });
+  }
+
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(fitCardHeaders, 120);
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fitCardHeaders);
+  } else {
+    fitCardHeaders();
+  }
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(fitCardHeaders);
+  }
+})();
+</script>
 
 </div>
 
