@@ -65,6 +65,7 @@ hide_footer: true
   }
 
   .section h2 {
+    font-family: Helvetica, Arial, sans-serif !important;
     font-weight: bold;
     border-left: 4px solid #004085;
     padding-left: 0.6rem;
@@ -167,6 +168,9 @@ hide_footer: true
     border-radius: 10px;
     padding: 1rem;
     transition: box-shadow 0.15s;
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
   }
 
   .project-card:hover {
@@ -174,7 +178,11 @@ hide_footer: true
   }
 
   .project-card h3 {
-    font-size: 0.95rem;
+    font-family: Helvetica, Arial, sans-serif !important;
+    font-size: clamp(0.6rem, 4.5cqi, 0.9rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin: 0 0 0.4rem 0;
     font-weight: bold;
   }
@@ -272,7 +280,7 @@ hide_footer: true
 
   .authors { font-size: 0.75rem; margin: 0.25rem 0 0 0; }
   .venue, .series-venue { font-size: 0.7rem; font-style: italic; margin: 0; }
-  .links { margin-top: 0.25rem; }
+  .links { margin-top: auto; padding-top: 0.5rem; }
 
   .modal-title { font-size: 1.1rem; font-weight: bold; margin: 0 0 0.4rem 0; }
   .modal-authors { font-size: 0.85rem; margin: 0 0 0.2rem 0; color: #444; }
@@ -290,6 +298,7 @@ hide_footer: true
     margin: 0.25rem 0 0 0;
   }
   .series-authors .label { font-style: normal; }
+  #research .series-authors .label { display: none; }
 </style>
 
 <div class="modal-overlay" id="desc-modal">
@@ -367,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       <div style="display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 0.5rem;">
       <!-- Name -->
-      <h1 style="margin:0; font-size:2rem;">Connor Magoon</h1>
+      <h1 style="margin:0; font-size:2rem; font-family: Helvetica, Arial, sans-serif !important;">Connor Magoon</h1>
       </div>
 
       <!-- About Box -->
@@ -440,7 +449,6 @@ document.addEventListener('DOMContentLoaded', function () {
 A deep-dive experimental, numerical, and theoretical follow-up to our initial discovery of galloping bubbles, which are vertically vibrating millimetric-sized bubbles that spontaneously break symmetry and self-propel along a horizontal wall. At their heart is the parametric excitation of symmetrical and asymmetrical shape modes that together generate a non-reciprocal deformation, enabling the bubble to `swim'.
 </div>
 </div>
-<div class="figure-badge">Coming soon</div>
 <div class="authors">
   <div class="series-authors">
     <span class="label">Experiments:</span>
@@ -453,6 +461,9 @@ A deep-dive experimental, numerical, and theoretical follow-up to our initial di
     <span class="series-venue">Submitted</span>
     <span class="series-venue">Submitted</span>
   </div>
+</div>
+<div class="links pill-links">
+<span class="pill">Coming soon</span>
 </div>
 </div>
 
@@ -517,8 +528,10 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 <img src="/images/collective_bubbles_flow.png" class="clickable-figure">
 <div class="figure-text"></div>
 </div>
-<div class="figure-badge">Ongoing</div>
 <p class="authors">Magoon, Liu, Guan, Tamim, Stone, Sáenz</p>
+<div class="links pill-links">
+<span class="pill">Ongoing</span>
+</div>
 </div>
 
 <!-- Neural Mappings -->
@@ -528,8 +541,10 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 <img src="/images/ant_mapping.png" class="clickable-figure">
 <div class="figure-text"></div>
 </div>
-<div class="figure-badge">Ongoing</div>
 <p class="authors">Magoon, Yang, Aigerman, Kovalsky</p>
+<div class="links pill-links">
+<span class="pill">Ongoing</span>
+</div>
 </div>
 
 
