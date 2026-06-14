@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="section" id="research">
 <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.5rem;">
 <h2 style="margin-bottom:0;">Research</h2>
-<span style="font-style:italic; font-size:0.85rem; white-space:nowrap;">Click figures for project descriptions.</span>
+<span style="font-style:italic; font-size:0.85rem; white-space:nowrap;">Click figures to enlarge and display short project descriptions.</span>
 </div>
 
 <div class="projects-grid">
