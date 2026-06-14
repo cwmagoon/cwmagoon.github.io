@@ -237,7 +237,7 @@ hide_footer: true
     z-index: 10000;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 1rem;
   }
 
   .modal-overlay.active {
@@ -247,13 +247,13 @@ hide_footer: true
   .modal-content {
     background: #fff;
     border-radius: 12px;
-    max-width: 600px;
+    max-width: 90vw;
     width: 100%;
     padding: 1.5rem;
     position: relative;
     font-size: 0.9rem;
     line-height: 1.5;
-    max-height: 80vh;
+    max-height: 90vh;
     overflow-y: auto;
   }
 
