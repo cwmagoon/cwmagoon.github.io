@@ -271,7 +271,7 @@ hide_footer: true
   }
 
   .authors { font-size: 0.75rem; margin: 0.25rem 0 0 0; }
-  .venue { font-size: 0.7rem; font-style: italic; margin: 0; }
+  .venue, .series-venue { font-size: 0.7rem; font-style: italic; margin: 0; }
   .links { margin-top: 0.25rem; }
 
   .modal-title { font-size: 1.1rem; font-weight: bold; margin: 0 0 0.4rem 0; }
@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const research = document.getElementById('research');
   if (!research) return;
 
-  const targets = research.querySelectorAll('.authors, .series-authors span:not(.label):not(.venue)');
+  const targets = research.querySelectorAll('.authors, .series-authors span:not(.label):not(.series-venue)');
 
   targets.forEach(function (el) {
     let html = el.innerHTML;
@@ -431,28 +431,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <div class="projects-grid">
 
-<!-- Collective -->
-<div class="project-card">
-<h3>Collective Galloping Bubbles</h3>
-<div class="figure-with-text">
-<img src="/images/collective_bubbles_flow.png" class="clickable-figure">
-<div class="figure-text"></div>
-</div>
-<div class="figure-badge">Ongoing</div>
-<p class="authors">Magoon, Liu, Guan, Tamim, Stone, Sáenz</p>
-</div>
-
-<!-- Neural Mappings -->
-<div class="project-card">
-<h3>Neural Mappings</h3>
-<div class="figure-with-text">
-<img src="/images/ant_mapping.png" class="clickable-figure">
-<div class="figure-text"></div>
-</div>
-<div class="figure-badge">Ongoing</div>
-<p class="authors">Magoon, Yang, Aigerman, Kovalsky</p>
-</div>
-
 <!-- Galloping Series -->
 <div class="project-card">
 <h3>Galloping Bubbles: Three-Part Series</h3>
@@ -471,9 +449,9 @@ A deep-dive experimental, numerical, and theoretical follow-up to our initial di
     <span>Guan et al.</span>
     <span>Magoon et al.</span>
     <span>Tamim et al.</span>
-    <span class="venue">Submitted</span>
-    <span class="venue">Submitted</span>
-    <span class="venue">Submitted</span>
+    <span class="series-venue">Submitted</span>
+    <span class="series-venue">Submitted</span>
+    <span class="series-venue">Submitted</span>
   </div>
 </div>
 </div>
@@ -530,6 +508,28 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 <a class="pill" href="https://journals.aps.org/prfluids/abstract/10.1103/PhysRevFluids.8.110501" target="_blank">Gallery Paper</a>
 <a class="pill" href="https://www.youtube.com/watch?v=0d_D6yvXAFo" target="_blank">Video</a>
 </div>
+</div>
+
+<!-- Collective -->
+<div class="project-card">
+<h3>Collective Galloping Bubbles</h3>
+<div class="figure-with-text">
+<img src="/images/collective_bubbles_flow.png" class="clickable-figure">
+<div class="figure-text"></div>
+</div>
+<div class="figure-badge">Ongoing</div>
+<p class="authors">Magoon, Liu, Guan, Tamim, Stone, Sáenz</p>
+</div>
+
+<!-- Neural Mappings -->
+<div class="project-card">
+<h3>Neural Mappings</h3>
+<div class="figure-with-text">
+<img src="/images/ant_mapping.png" class="clickable-figure">
+<div class="figure-text"></div>
+</div>
+<div class="figure-badge">Ongoing</div>
+<p class="authors">Magoon, Yang, Aigerman, Kovalsky</p>
 </div>
 
 
