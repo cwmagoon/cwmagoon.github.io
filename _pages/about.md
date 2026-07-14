@@ -230,43 +230,98 @@ hide_footer: true
 
   /* Modal overlay */
   .modal-overlay {
-    display: none;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.6);
     z-index: 10000;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
   }
 
   .modal-overlay.active {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .modal-content {
     background: #fff;
-    border-radius: 12px;
-    max-width: 90vw;
-    width: 100%;
-    padding: 1.5rem;
+    border-radius: 18px;
+    width: min(1020px, 92vw);
+    max-height: 86vh;
+    padding: 1.8rem 2.1rem;
     position: relative;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    max-height: 90vh;
-    overflow-y: auto;
+    box-sizing: border-box;
+    transform-origin: top left;
+    overflow: hidden;
+    box-shadow: 0 28px 80px rgba(0,0,0,0.24);
+    will-change: transform, opacity;
+  }
+
+  .modal-body {
+    display: grid;
+    grid-template-columns: minmax(320px, 1.1fr) minmax(0, 1fr);
+    gap: 1.8rem;
+    align-items: center;
+  }
+
+  .modal-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
   }
 
   .modal-content img {
     width: 100%;
-    border-radius: 8px;
-    margin-bottom: 1rem;
+    max-height: min(540px, calc(86vh - 3.6rem));
+    object-fit: contain;
+    border-radius: 10px;
+    margin: 0;
+    display: block;
+    will-change: transform, opacity;
+  }
+
+  .modal-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 0;
+    max-width: 34rem;
+    padding: 0.1rem 0.2rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #222;
+  }
+
+  .modal-copy > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .modal-content[data-animating="true"] .modal-copy {
+    opacity: 0;
+  }
+
+  .modal-content[data-animating="false"] .modal-copy {
+    opacity: 1;
+    transition: opacity 0.01s linear;
+  }
+
+  .modal-content[data-reveal-copy="true"] .modal-copy {
+    opacity: 1;
+    transition: opacity 0.01s linear;
   }
 
   .modal-close {
     position: absolute;
-    top: 0.5rem;
-    right: 0.75rem;
+    top: 0.85rem;
+    right: 1rem;
     background: none;
     border: none;
     font-size: 1.4rem;
@@ -300,12 +355,14 @@ hide_footer: true
     }
   }
 
-  .modal-title { font-size: 1.1rem; font-weight: bold; margin: 0 0 0.4rem 0; }
-  .modal-authors { font-size: 0.85rem; margin: 0 0 0.2rem 0; color: #444; }
-  .modal-venue { font-size: 0.8rem; font-style: italic; margin: 0 0 0.6rem 0; color: #666; }
-  .modal-desc { margin-bottom: 0.6rem; }
-  .modal-equal { font-size: 0.75rem; font-style: italic; color: #888; margin-top: 0.5rem; }
-  .modal-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+  .modal-title { font-size: 1.08rem; font-weight: bold; margin: 0 0 0.45rem 0; line-height: 1.3; }
+  .modal-authors { font-size: 0.87rem; margin: 0 0 0.28rem 0; color: #444; }
+  .modal-venue { font-size: 0.82rem; font-style: italic; margin: 0 0 0.85rem 0; color: #666; }
+  .modal-desc { margin-bottom: 0.85rem; }
+  .modal-desc p:first-child { margin-top: 0; }
+  .modal-desc p:last-child { margin-bottom: 0; }
+  .modal-equal { font-size: 0.78rem; font-style: italic; color: #888; margin-top: 0.55rem; }
+  .modal-pills { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.7rem; }
 
   /* Series parts copied into the modal lose their flex parent, so lay
      them out as spaced inline blocks (name over its own "Submitted"). */
@@ -339,22 +396,55 @@ hide_footer: true
     white-space: nowrap;
     line-height: 1.3;
   }
+
+  @media (max-width: 820px) {
+    .modal-overlay {
+      padding: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .modal-content {
+      width: min(92vw, 640px);
+      min-height: auto;
+      max-height: 90vh;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .modal-body {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .modal-content img {
+      max-height: 40vh;
+    }
+
+    .modal-copy {
+      max-width: none;
+      padding-right: 0;
+    }
+  }
 </style>
 
 <div class="modal-overlay" id="desc-modal">
   <div class="modal-content">
     <button class="modal-close" aria-label="Close">&times;</button>
-    <img id="modal-img" src="" alt="">
-    <p class="modal-title" id="modal-title"></p>
-    <p class="modal-authors" id="modal-authors"></p>
-    <p class="modal-venue" id="modal-venue"></p>
-    <div class="modal-desc" id="modal-text"></div>
-    <p class="modal-equal" id="modal-equal" style="display:none;"><sup>*</sup>Equal contribution</p>
-    <div class="modal-pills" id="modal-pills"></div>
+    <div class="modal-body">
+      <div class="modal-media">
+        <img id="modal-img" src="" alt="">
+      </div>
+      <div class="modal-copy">
+        <p class="modal-title" id="modal-title"></p>
+        <p class="modal-authors" id="modal-authors"></p>
+        <p class="modal-venue" id="modal-venue"></p>
+        <div class="modal-desc" id="modal-text"></div>
+        <p class="modal-equal" id="modal-equal" style="display:none;"><sup>*</sup>Equal contribution</p>
+        <div class="modal-pills" id="modal-pills"></div>
+      </div>
+    </div>
   </div>
 </div>
-
-<script src="/assets/js/modal.js"></script>
 
 <script>
 /* Author homepage links — edit URLs here; leave "" to skip linking */
@@ -373,8 +463,18 @@ const authorLinks = {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
+  var modal = document.getElementById('desc-modal');
+  var modalContent = modal ? modal.querySelector('.modal-content') : null;
+  var modalImg = document.getElementById('modal-img');
+  var modalTitle = document.getElementById('modal-title');
+  var modalAuthors = document.getElementById('modal-authors');
+  var modalVenue = document.getElementById('modal-venue');
+  var modalText = document.getElementById('modal-text');
+  var modalEqual = document.getElementById('modal-equal');
+  var modalPills = document.getElementById('modal-pills');
+  var closeBtn = modal ? modal.querySelector('.modal-close') : null;
   const research = document.getElementById('research');
-  if (!research) return;
+  if (!research || !modal || !modalContent || !closeBtn) return;
 
   const targets = research.querySelectorAll('.authors, .series-authors span:not(.label):not(.series-venue)');
 
@@ -395,6 +495,138 @@ document.addEventListener('DOMContentLoaded', function () {
       html = html.replace(re, '<a href="' + url + '" target="_blank" style="color:inherit;text-decoration:none;cursor:pointer;">$1</a>');
     });
     el.innerHTML = html;
+  });
+
+  var activeTrigger = null;
+  var isAnimating = false;
+  var animationMs = 520;
+  var closeFadeMs = 180;
+  var copyRevealTimer = null;
+
+  function resetModalTransform() {
+    if (copyRevealTimer) {
+      window.clearTimeout(copyRevealTimer);
+      copyRevealTimer = null;
+    }
+    modalContent.style.transform = '';
+    modalContent.style.transition = '';
+    modalContent.style.opacity = '';
+    modalImg.style.transform = '';
+    modalImg.style.transition = '';
+    modalImg.style.transformOrigin = '';
+    modalContent.dataset.revealCopy = 'false';
+  }
+
+  function setModalContent(card, img, text) {
+    modalImg.src = img.src;
+    modalImg.alt = img.alt || '';
+    modalText.innerHTML = text.innerHTML;
+    var h3 = card ? card.querySelector('h3') : null;
+    modalTitle.textContent = h3 ? h3.textContent : '';
+    var authors = card ? card.querySelector('.authors') : null;
+    modalAuthors.innerHTML = authors ? authors.innerHTML : '';
+    var venue = card ? card.querySelector('.venue') : null;
+    modalVenue.innerHTML = venue ? venue.innerHTML : '';
+    modalVenue.style.display = venue ? '' : 'none';
+    var hasEqual = authors && authors.innerHTML.indexOf('sup') !== -1;
+    modalEqual.style.display = hasEqual ? '' : 'none';
+    var links = card ? card.querySelector('.links.pill-links') : null;
+    modalPills.innerHTML = links ? links.innerHTML : '';
+    modalPills.style.display = links ? '' : 'none';
+  }
+
+  function animateOpen(fromImg) {
+    modal.classList.add('active');
+    modalContent.dataset.animating = 'true';
+    modalContent.dataset.revealCopy = 'false';
+    modalContent.style.transition = 'none';
+    modalContent.style.transform = 'none';
+    modalContent.style.opacity = '1';
+    modalImg.style.transition = 'none';
+    modalImg.style.transform = 'none';
+
+    var fromRect = fromImg.getBoundingClientRect();
+    var toRect = modalContent.getBoundingClientRect();
+    var contentScale = Math.min(fromRect.width / toRect.width, fromRect.height / toRect.height);
+    var fromCenterX = fromRect.left + (fromRect.width / 2);
+    var fromCenterY = fromRect.top + (fromRect.height / 2);
+    var toCenterX = toRect.left + (toRect.width / 2);
+    var toCenterY = toRect.top + (toRect.height / 2);
+    var translateX = fromCenterX - toCenterX;
+    var translateY = fromCenterY - toCenterY;
+
+    var modalImgRect = modalImg.getBoundingClientRect();
+    var imgScaleX = fromRect.width / modalImgRect.width;
+    var imgScaleY = fromRect.height / modalImgRect.height;
+    var imgTranslateX = fromCenterX - (modalImgRect.left + modalImgRect.width / 2);
+    var imgTranslateY = fromCenterY - (modalImgRect.top + modalImgRect.height / 2);
+
+    modalContent.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + contentScale + ')';
+    modalContent.style.opacity = '0.7';
+    modalImg.style.transformOrigin = 'center center';
+    modalImg.style.transform = 'translate(' + imgTranslateX + 'px, ' + imgTranslateY + 'px) scale(' + imgScaleX + ', ' + imgScaleY + ')';
+    modalContent.getBoundingClientRect();
+
+    requestAnimationFrame(function () {
+      modalContent.style.transition = 'transform ' + animationMs + 'ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity ' + animationMs + 'ms ease';
+      modalImg.style.transition = 'transform ' + animationMs + 'ms cubic-bezier(0.2, 0.8, 0.2, 1)';
+      modalContent.style.transform = 'translate(0px, 0px) scale(1)';
+      modalContent.style.opacity = '1';
+      modalImg.style.transform = 'translate(0px, 0px) scale(1, 1)';
+      copyRevealTimer = window.setTimeout(function () {
+        modalContent.dataset.revealCopy = 'true';
+      }, Math.round(animationMs * 0.68));
+      window.setTimeout(function () {
+        modalContent.dataset.animating = 'false';
+        resetModalTransform();
+        isAnimating = false;
+      }, animationMs);
+    });
+  }
+
+  function animateClose() {
+    if (isAnimating) return;
+    isAnimating = true;
+    modalContent.dataset.animating = 'true';
+    modalContent.style.transition = 'opacity ' + closeFadeMs + 'ms ease';
+    modalContent.style.opacity = '0';
+    modal.classList.remove('active');
+
+    window.setTimeout(function () {
+      modalContent.dataset.animating = 'false';
+      resetModalTransform();
+      activeTrigger = null;
+      isAnimating = false;
+    }, closeFadeMs);
+  }
+
+  var figures = research.querySelectorAll('.figure-with-text');
+  for (var i = 0; i < figures.length; i++) {
+    (function (el) {
+      var img = el.querySelector('img');
+      var text = el.querySelector('.figure-text');
+      if (!img || !text) return;
+
+      img.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isAnimating) return;
+
+        var card = el.closest('.project-card');
+        activeTrigger = img;
+        isAnimating = true;
+        setModalContent(card, img, text);
+        animateOpen(img);
+      });
+    })(figures[i]);
+  }
+
+  closeBtn.addEventListener('click', animateClose);
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) animateClose();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('active')) animateClose();
   });
 });
 </script>
@@ -706,12 +938,4 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 </script>
 
 </div>
-
-
-
-
-
-
-
-
 
