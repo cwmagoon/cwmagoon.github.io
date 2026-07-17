@@ -19,6 +19,10 @@ hide_footer: true
 <link rel="manifest" href="/images/site.webmanifest">
 
 <style>
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     font-family: "Times New Roman", Times, serif !important;
   }
@@ -28,13 +32,19 @@ hide_footer: true
     padding: 0;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   a {
     text-decoration: none;
     color: inherit;
   }
 
   .main-wrap {
-    max-width: 60%;
+    max-width: min(1500px, 92vw);
     margin: 0.25rem auto 1rem auto;
   }
 
@@ -43,6 +53,10 @@ hide_footer: true
     margin: 1rem 0;
     border-radius: 14px;
     background: #f3f3f3;
+  }
+
+  .section-accent-gray {
+    border-left: 4px solid #8d8d8d;
   }
 
   .section-header {
@@ -67,8 +81,6 @@ hide_footer: true
   .section h2 {
     font-family: Helvetica, Arial, sans-serif !important;
     font-weight: bold;
-    border-left: 4px solid #004085;
-    padding-left: 0.6rem;
     margin-top: 0;
   }
 
@@ -147,13 +159,22 @@ hide_footer: true
   /* Grid */
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1.5rem;
   }
 
   @media (max-width: 1400px) {
+    .projects-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .main-wrap { max-width: min(1280px, 90vw); }
+  }
+
+  @media (max-width: 1100px) {
+    .projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .main-wrap { max-width: 92vw; }
+  }
+
+  @media (max-width: 760px) {
     .projects-grid { grid-template-columns: 1fr; }
-    .main-wrap { max-width: 80%; }
   }
 
   @media (max-width: 600px) {
@@ -166,14 +187,17 @@ hide_footer: true
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     padding: 1rem;
-    transition: box-shadow 0.15s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     container-type: inline-size;
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: visible;
   }
 
   .project-card:hover {
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transform: translateY(-8px) scale(1.015);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.2), 0 8px 18px rgba(0,0,0,0.12);
   }
 
   .project-card h3 {
@@ -209,10 +233,6 @@ hide_footer: true
   }
 
   /* Status badges */
-  .project-card {
-    position: relative;
-  }
-
   .figure-badge {
     position: absolute;
     top: 0;
@@ -706,7 +726,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <!-- Research -->
-<div class="section" id="research">
+<div class="section section-accent-gray" id="research">
 <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.5rem;">
 <h2 style="margin-bottom:0;">Research</h2>
 <span style="font-style:italic; font-size:0.85rem; white-space:nowrap;">Click figures to enlarge and display short project descriptions.</span>
@@ -824,7 +844,7 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 
 
 
-<div class="section" id="code">
+<div class="section section-accent-gray" id="code">
 <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.5rem;">
 <h2 style="margin-bottom:0;">Code</h2>
 <span style="font-style:italic; font-size:0.85rem; white-space:nowrap;">Click figures for project repositories.</span>
@@ -938,4 +958,3 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 </script>
 
 </div>
-
