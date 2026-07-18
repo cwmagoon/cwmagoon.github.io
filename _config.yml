@@ -153,6 +153,8 @@ exclude:
   - tmp
   - vendor
   - claude_analysis
+  - scripts
+  - paper_previews
 keep_files:
   - .git
   - .svn

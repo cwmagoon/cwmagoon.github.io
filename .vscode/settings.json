@@ -1,0 +1,5 @@
+{
+  "terminal.integrated.env.linux": {
+    "CLAUDE_CONFIG_DIR": "/home/connorwm/.claude-ws-B"
+  }
+}

@@ -286,8 +286,8 @@ hide_footer: true
 
   .modal-body {
     display: grid;
-    grid-template-columns: minmax(320px, 1.1fr) minmax(0, 1fr);
-    gap: 1.8rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
     align-items: center;
   }
 
@@ -300,7 +300,7 @@ hide_footer: true
 
   .modal-content img {
     width: 100%;
-    max-height: min(540px, calc(86vh - 3.6rem));
+    max-height: min(640px, 62vh);
     object-fit: contain;
     border-radius: 10px;
     margin: 0;
@@ -417,6 +417,102 @@ hide_footer: true
     line-height: 1.3;
   }
 
+  /* Side-by-side previews (paper/video/poster), desktop only */
+  .modal-previews {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .modal-content.has-previews {
+    width: min(1500px, 96vw);
+    overflow-y: auto;
+    max-height: 94vh;
+  }
+
+  .modal-content.has-previews .modal-previews {
+    display: grid;
+  }
+
+  .preview-box {
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f6f8fa;
+    border: 1px solid #e0e0e0;
+  }
+
+  .preview-video {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 */
+    height: 0;
+  }
+
+  .preview-video iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .preview-poster {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    cursor: pointer;
+  }
+
+  .preview-poster img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .preview-paper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 220px;
+    color: #666;
+    font-size: 0.85rem;
+    text-align: center;
+    border-style: dashed;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .preview-paper:hover {
+    background: #eef1f4;
+  }
+
+  .preview-paper-icon {
+    font-size: 1.8rem;
+  }
+
+  .preview-paper-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .preview-paper-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 700px) {
+    .modal-previews {
+      grid-template-columns: 1fr;
+    }
+  }
+
   @media (max-width: 820px) {
     .modal-overlay {
       padding: 0.75rem;
@@ -463,6 +559,7 @@ hide_footer: true
         <div class="modal-pills" id="modal-pills"></div>
       </div>
     </div>
+    <div class="modal-previews" id="modal-previews"></div>
   </div>
 </div>
 
@@ -482,6 +579,74 @@ const authorLinks = {
   "Camassa":  "https://math.unc.edu/faculty-member/camassa-roberto/"
 };
 
+/* Side-by-side previews shown under the modal, desktop only.
+   "paper" falls back to a placeholder box when no generated preview image exists yet
+   (see scripts/make_paper_preview.py). */
+const paperPreviewImages = {
+  "Galloping Bubbles": "/images/paper_previews/nat_com.png",
+  "dQP: Differentiating Quadratic Programs": "/images/paper_previews/dqp.png",
+  "Traveling Faraday Waves": "/images/paper_previews/faraday.png"
+};
+
+const modalPreviewConfig = {
+  "dQP: Differentiating Quadratic Programs": [
+    { type: "paper", label: "Paper" },
+    { type: "poster", label: "Poster" }
+  ],
+  "Galloping Bubbles": [
+    { type: "paper", label: "Paper" },
+    { type: "video", label: "Video" }
+  ],
+  "Traveling Faraday Waves": [
+    { type: "paper", label: "Gallery Paper" },
+    { type: "video", label: "Video" }
+  ]
+};
+
+function isDesktopPreview() {
+  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
+function getYouTubeEmbedUrl(url) {
+  var idMatch = url.match(/(?:youtu\.be\/|[?&]v=)([^&]+)/);
+  var id = idMatch ? idMatch[1] : '';
+  return id ? ('https://www.youtube.com/embed/' + id) : '';
+}
+
+function buildPreviewHTML(card) {
+  if (!card || !isDesktopPreview()) return '';
+  var h3 = card.querySelector('h3');
+  var title = h3 ? h3.textContent.trim() : '';
+  var config = modalPreviewConfig[title];
+  var links = card.querySelector('.links.pill-links');
+  if (!config || !links) return '';
+
+  var anchors = Array.from(links.querySelectorAll('a'));
+  var boxes = config.map(function (item) {
+    var anchor = anchors.find(function (a) { return a.textContent.trim() === item.label; });
+    if (!anchor) return '';
+    var href = anchor.href;
+
+    if (item.type === 'video') {
+      var embedUrl = getYouTubeEmbedUrl(href);
+      if (!embedUrl) return '';
+      return '<div class="preview-box preview-video"><iframe src="' + embedUrl +
+        '" title="Video preview" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
+    }
+    if (item.type === 'poster') {
+      return '<a class="preview-box preview-poster" href="' + href + '" target="_blank"><img src="' + href + '" alt="Poster"></a>';
+    }
+    var paperImg = paperPreviewImages[title];
+    if (paperImg) {
+      return '<a class="preview-box preview-paper-img" href="' + href + '" target="_blank"><img src="' + paperImg + '" alt="Paper preview"></a>';
+    }
+    return '<a class="preview-box preview-paper" href="' + href + '" target="_blank">' +
+      '<span class="preview-paper-icon">&#128196;</span><span>Paper preview coming soon</span></a>';
+  }).filter(Boolean);
+
+  return boxes.join('');
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   var modal = document.getElementById('desc-modal');
   var modalContent = modal ? modal.querySelector('.modal-content') : null;
@@ -492,6 +657,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var modalText = document.getElementById('modal-text');
   var modalEqual = document.getElementById('modal-equal');
   var modalPills = document.getElementById('modal-pills');
+  var modalPreviews = document.getElementById('modal-previews');
   var closeBtn = modal ? modal.querySelector('.modal-close') : null;
   const research = document.getElementById('research');
   if (!research || !modal || !modalContent || !closeBtn) return;
@@ -537,6 +703,40 @@ document.addEventListener('DOMContentLoaded', function () {
     modalContent.dataset.revealCopy = 'false';
   }
 
+  function fitModalSize() {
+    var maxW = Math.min(1500, window.innerWidth * 0.96);
+    var minW = Math.min(600, maxW);
+    var availableH = window.innerHeight * 0.94;
+
+    modalContent.style.transition = 'none';
+    modalContent.style.overflow = 'visible';
+    modalContent.style.maxHeight = 'none';
+
+    function heightAt(w) {
+      modalContent.style.width = w + 'px';
+      return modalContent.scrollHeight;
+    }
+
+    var fitWidth = maxW;
+    if (heightAt(maxW) > availableH) {
+      var lo = minW, hi = maxW;
+      for (var i = 0; i < 8; i++) {
+        var mid = (lo + hi) / 2;
+        if (heightAt(mid) > availableH) {
+          hi = mid;
+        } else {
+          lo = mid;
+        }
+      }
+      fitWidth = lo;
+    }
+
+    modalContent.style.width = fitWidth + 'px';
+    modalContent.style.maxHeight = availableH + 'px';
+    modalContent.style.overflow = 'hidden';
+    modalContent.style.overflowY = 'auto';
+  }
+
   function setModalContent(card, img, text) {
     modalImg.src = img.src;
     modalImg.alt = img.alt || '';
@@ -553,6 +753,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var links = card ? card.querySelector('.links.pill-links') : null;
     modalPills.innerHTML = links ? links.innerHTML : '';
     modalPills.style.display = links ? '' : 'none';
+
+    var previewHTML = buildPreviewHTML(card);
+    modalPreviews.innerHTML = previewHTML;
+    modalContent.classList.toggle('has-previews', !!previewHTML);
+
+    fitModalSize();
   }
 
   function animateOpen(fromImg) {
@@ -615,6 +821,8 @@ document.addEventListener('DOMContentLoaded', function () {
     window.setTimeout(function () {
       modalContent.dataset.animating = 'false';
       resetModalTransform();
+      modalPreviews.innerHTML = '';
+      modalContent.classList.remove('has-previews');
       activeTrigger = null;
       isAnimating = false;
     }, closeFadeMs);
