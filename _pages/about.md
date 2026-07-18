@@ -738,6 +738,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function setModalContent(card, img, text) {
+    modalImg.onload = null;
     modalImg.src = img.src;
     modalImg.alt = img.alt || '';
     modalText.innerHTML = text.innerHTML;
@@ -759,6 +760,13 @@ document.addEventListener('DOMContentLoaded', function () {
     modalContent.classList.toggle('has-previews', !!previewHTML);
 
     fitModalSize();
+
+    var pendingImgs = [modalImg].concat(Array.from(modalPreviews.querySelectorAll('img')));
+    pendingImgs.forEach(function (im) {
+      if (!im.complete) {
+        im.addEventListener('load', fitModalSize, { once: true });
+      }
+    });
   }
 
   function animateOpen(fromImg) {
