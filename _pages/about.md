@@ -206,9 +206,9 @@ hide_footer: true
     margin: 0 0 0.4rem 0;
     font-weight: bold;
     line-height: 1.3;
-    white-space: normal;
-    overflow-wrap: break-word;
-    overflow: visible;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    overflow: hidden;
     text-overflow: clip;
   }
 
@@ -910,11 +910,7 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
     });
 
     var sizes = headers.map(function (h) {
-      var card = h.closest('.project-card');
-      var cs = getComputedStyle(card);
-      var available = card.clientWidth
-        - parseFloat(cs.paddingLeft)
-        - parseFloat(cs.paddingRight);
+      var available = h.clientWidth;
 
       /* hi is large so the search can grow the font to fill the card width
          (not just shrink to fit). In multi-column the title overflows well
@@ -936,7 +932,7 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 
     headers.forEach(function (h) {
       h.style.fontSize = uniformSize + 'px';
-      h.style.whiteSpace = '';
+      h.style.whiteSpace = 'nowrap';
     });
   }
 
