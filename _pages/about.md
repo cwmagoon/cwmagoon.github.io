@@ -603,8 +603,16 @@ const modalPreviewConfig = {
   ]
 };
 
+function isIOSDesktopSite() {
+  // iPhone/iPad browsers in "Request Desktop Website" mode spoof a Mac user agent
+  // but remain touch devices, so the hover/pointer check below misses them.
+  var isMacUA = /Macintosh/.test(navigator.userAgent);
+  var hasTouch = navigator.maxTouchPoints > 1 || 'ontouchend' in document;
+  return isMacUA && hasTouch;
+}
+
 function isDesktopPreview() {
-  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  return window.matchMedia('(hover: hover) and (pointer: fine)').matches || isIOSDesktopSite();
 }
 
 function getYouTubeEmbedUrl(url) {
