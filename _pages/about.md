@@ -617,7 +617,7 @@ function getYouTubeEmbedUrl(url, startSeconds) {
 /* Skip past the title card for these videos once they autoplay */
 const videoStartSeconds = {
   "Galloping Bubbles": 5,
-  "Traveling Faraday Waves": 5
+  "Traveling Faraday Waves": 3
 };
 
 function buildPreviewHTML(card) {
