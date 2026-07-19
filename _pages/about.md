@@ -605,11 +605,20 @@ const modalPreviewConfig = {
   ]
 };
 
-function getYouTubeEmbedUrl(url) {
+function getYouTubeEmbedUrl(url, startSeconds) {
   var idMatch = url.match(/(?:youtu\.be\/|[?&]v=)([^&]+)/);
   var id = idMatch ? idMatch[1] : '';
-  return id ? ('https://www.youtube.com/embed/' + id + '?autoplay=1&mute=1&playsinline=1') : '';
+  if (!id) return '';
+  var params = 'autoplay=1&mute=1&playsinline=1';
+  if (startSeconds) params += '&start=' + startSeconds;
+  return 'https://www.youtube.com/embed/' + id + '?' + params;
 }
+
+/* Skip past the title card for these videos once they autoplay */
+const videoStartSeconds = {
+  "Galloping Bubbles": 5,
+  "Traveling Faraday Waves": 5
+};
 
 function buildPreviewHTML(card) {
   if (!card) return '';
@@ -626,7 +635,7 @@ function buildPreviewHTML(card) {
     var href = anchor.href;
 
     if (item.type === 'video') {
-      var embedUrl = getYouTubeEmbedUrl(href);
+      var embedUrl = getYouTubeEmbedUrl(href, videoStartSeconds[title]);
       if (!embedUrl) return '';
       return '<div class="preview-box preview-video"><iframe src="' + embedUrl +
         '" title="Video preview" allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
