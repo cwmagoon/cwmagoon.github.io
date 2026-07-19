@@ -417,7 +417,7 @@ hide_footer: true
     line-height: 1.3;
   }
 
-  /* Side-by-side previews (paper/video/poster), desktop only */
+  /* Previews (paper/video/poster): side-by-side on desktop, stacked on mobile */
   .modal-previews {
     display: none;
     grid-template-columns: 1fr 1fr;
@@ -425,14 +425,16 @@ hide_footer: true
     margin-top: 1.5rem;
   }
 
-  .modal-content.has-previews {
-    width: min(1500px, 96vw);
-    overflow-y: auto;
-    max-height: 94vh;
-  }
-
   .modal-content.has-previews .modal-previews {
     display: grid;
+  }
+
+  @media (min-width: 821px) {
+    .modal-content.has-previews {
+      width: min(1500px, 96vw);
+      overflow-y: auto;
+      max-height: 94vh;
+    }
   }
 
   .preview-box {
@@ -579,7 +581,7 @@ const authorLinks = {
   "Camassa":  "https://math.unc.edu/faculty-member/camassa-roberto/"
 };
 
-/* Side-by-side previews shown under the modal, desktop only.
+/* Previews shown under the modal (side-by-side on desktop, stacked on mobile).
    "paper" falls back to a placeholder box when no generated preview image exists yet
    (see scripts/make_paper_preview.py). */
 const paperPreviewImages = {
@@ -603,18 +605,6 @@ const modalPreviewConfig = {
   ]
 };
 
-function isIOSDesktopSite() {
-  /* iPhone/iPad browsers in "Request Desktop Website" mode spoof a Mac user agent
-     but remain touch devices, so the hover/pointer check below misses them. */
-  var isMacUA = /Macintosh/.test(navigator.userAgent);
-  var hasTouch = navigator.maxTouchPoints > 1 || 'ontouchend' in document;
-  return isMacUA && hasTouch;
-}
-
-function isDesktopPreview() {
-  return window.matchMedia('(hover: hover) and (pointer: fine)').matches || isIOSDesktopSite();
-}
-
 function getYouTubeEmbedUrl(url) {
   var idMatch = url.match(/(?:youtu\.be\/|[?&]v=)([^&]+)/);
   var id = idMatch ? idMatch[1] : '';
@@ -622,7 +612,7 @@ function getYouTubeEmbedUrl(url) {
 }
 
 function buildPreviewHTML(card) {
-  if (!card || !isDesktopPreview()) return '';
+  if (!card) return '';
   var h3 = card.querySelector('h3');
   var title = h3 ? h3.textContent.trim() : '';
   var config = modalPreviewConfig[title];
