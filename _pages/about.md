@@ -608,7 +608,7 @@ const modalPreviewConfig = {
 function getYouTubeEmbedUrl(url) {
   var idMatch = url.match(/(?:youtu\.be\/|[?&]v=)([^&]+)/);
   var id = idMatch ? idMatch[1] : '';
-  return id ? ('https://www.youtube.com/embed/' + id) : '';
+  return id ? ('https://www.youtube.com/embed/' + id + '?autoplay=1&mute=1&playsinline=1') : '';
 }
 
 function buildPreviewHTML(card) {
@@ -629,7 +629,7 @@ function buildPreviewHTML(card) {
       var embedUrl = getYouTubeEmbedUrl(href);
       if (!embedUrl) return '';
       return '<div class="preview-box preview-video"><iframe src="' + embedUrl +
-        '" title="Video preview" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
+        '" title="Video preview" allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
     }
     if (item.type === 'poster') {
       return '<a class="preview-box preview-poster" href="' + href + '" target="_blank"><img src="' + href + '" alt="Poster"></a>';
