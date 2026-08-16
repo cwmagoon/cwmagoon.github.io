@@ -313,7 +313,6 @@ hide_footer: true
     flex-direction: column;
     justify-content: flex-start;
     min-width: 0;
-    max-width: 34rem;
     padding: 0.1rem 0.2rem 0 0;
     font-size: 0.9rem;
     line-height: 1.5;
@@ -336,6 +335,16 @@ hide_footer: true
   .modal-content[data-reveal-copy="true"] .modal-copy {
     opacity: 1;
     transition: opacity 0.01s linear;
+  }
+
+  /* Briefly forces the title/author lines onto a single line so JS can measure
+     the width they need, before restoring normal (wrappable) layout. */
+  .modal-content.measuring-width .modal-title,
+  .modal-content.measuring-width .modal-paper-title,
+  .modal-content.measuring-width .modal-venue,
+  .modal-content.measuring-width .modal-authors,
+  .modal-content.measuring-width .modal-authors p {
+    white-space: nowrap;
   }
 
   .modal-close {
@@ -376,6 +385,7 @@ hide_footer: true
   }
 
   .modal-title { font-size: 1.08rem; font-weight: bold; margin: 0 0 0.45rem 0; line-height: 1.3; }
+  .modal-paper-title { font-size: 0.85rem; color: #555; margin: -0.25rem 0 0.5rem 0; line-height: 1.3; }
   .modal-authors { font-size: 0.87rem; margin: 0 0 0.28rem 0; color: #444; }
   .modal-venue { font-size: 0.82rem; font-style: italic; margin: 0 0 0.85rem 0; color: #666; }
   .modal-desc { margin-bottom: 0.85rem; }
@@ -393,6 +403,13 @@ hide_footer: true
   }
   .modal-authors .series-part:last-child { margin-right: 0; }
   .modal-authors .series-part .series-venue { color: #666; }
+
+  /* Full paper title + author list for each part of a series, shown in the modal */
+  .series-part-full { margin-bottom: 0.6rem; }
+  .series-part-full:last-child { margin-bottom: 0; }
+  .series-full-title { margin: 0 0 0.15rem 0; }
+  .series-full-authors { margin: 0; color: #444; }
+  .series-full-venue { font-style: italic; font-size: 0.82rem; color: #666; margin: 0.15rem 0 0 0; }
 
   /* Three-part series authors grid */
   .series-authors {
@@ -427,6 +444,18 @@ hide_footer: true
 
   .modal-content.has-previews .modal-previews {
     display: grid;
+  }
+
+  /* A single preview (e.g. just a poster) keeps the same width it would
+     have had as one half of the two-column grid, just centered. */
+  .modal-previews.single-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-previews.single-preview .preview-box {
+    width: 100%;
+    max-width: calc((100% - 1.5rem) / 2);
+    margin: 0 auto;
   }
 
   @media (min-width: 821px) {
@@ -513,6 +542,10 @@ hide_footer: true
     .modal-previews {
       grid-template-columns: 1fr;
     }
+
+    .modal-previews.single-preview .preview-box {
+      max-width: 100%;
+    }
   }
 
   @media (max-width: 820px) {
@@ -554,7 +587,8 @@ hide_footer: true
       </div>
       <div class="modal-copy">
         <p class="modal-title" id="modal-title"></p>
-        <p class="modal-authors" id="modal-authors"></p>
+        <p class="modal-paper-title" id="modal-paper-title" style="display:none;"></p>
+        <div class="modal-authors" id="modal-authors"></div>
         <p class="modal-venue" id="modal-venue"></p>
         <div class="modal-desc" id="modal-text"></div>
         <p class="modal-equal" id="modal-equal" style="display:none;"><sup>*</sup>Equal contribution</p>
@@ -571,14 +605,33 @@ const authorLinks = {
   "Magoon":   "",
   "Liu":      "https://cn.linkedin.com/in/xinyun-liu-8b2632207",
   "Guan":     "https://www.hull.ac.uk/staff-directory/jian-hui-guan",
-  "Tamim":    "https://sites.google.com/view/stamim/home",
+  "Tamim":    "https://saiful-tamim.github.io/",
   "Stone":    "https://stonelab.princeton.edu/index.php?id=people",
   "Sáenz":    "https://www.pml.unc.edu/about-me",
   "Yang":     "https://fengyuyang25.github.io/",
   "Aigerman": "https://noamaig.github.io/",
   "Kovalsky": "https://shaharkov.github.io/",
   "Durey":    "https://www.gla.ac.uk/schools/mathematicsstatistics/staff/matthewdurey/",
-  "Camassa":  "https://math.unc.edu/faculty-member/camassa-roberto/"
+  "Camassa":  "https://math.unc.edu/faculty-member/camassa-roberto/",
+  "Stein":    "David B. Stein",
+  "Stein":    "https://users.flatironinstitute.org/~dstein/",
+  "Weady":    "https://users.flatironinstitute.org/~sweady/"
+};
+
+/* Full names for each author, keyed by the short last name used in authorLinks.
+   Used so links/highlighting apply to the full name too when it's spelled out. */
+const authorFullNames = {
+  "Magoon":   "Connor W. Magoon",
+  "Liu":      "Xinyun Liu",
+  "Guan":     "Jian H. Guan",
+  "Tamim":    "Saiful I. Tamim",
+  "Stone":    "Howard A. Stone",
+  "Sáenz":    "Pedro J. Sáenz",
+  "Yang":     "Fengyu Yang",
+  "Aigerman": "Noam Aigerman",
+  "Kovalsky": "Shahar Z. Kovalsky",
+  "Durey":    "Matthew Durey",
+  "Camassa":  "Roberto Camassa"
 };
 
 /* Previews shown under the modal (side-by-side on desktop, stacked on mobile).
@@ -602,6 +655,9 @@ const modalPreviewConfig = {
   "Traveling Faraday Waves": [
     { type: "paper", label: "Gallery Paper" },
     { type: "video", label: "Video" }
+  ],
+  "Confined Polar Active Suspensions": [
+    { type: "poster", label: "Poster" }
   ]
 };
 
@@ -618,6 +674,54 @@ function getYouTubeEmbedUrl(url, startSeconds) {
 const videoStartSeconds = {
   "Galloping Bubbles": 5,
   "Traveling Faraday Waves": 3
+};
+
+/* Full paper title + author list for each part of a series, shown in the modal
+   in place of the terse "Name et al. / Submitted" line used on the card. */
+const seriesFullAuthors = {
+  "Galloping Bubbles: Three-Part Series": [
+    {
+      title: "Spontaneous galloping of a vibrating bubble along a solid boundary. <strong>Part 1: Experiments</strong>",
+      authors: "Jian H. Guan, Xinyun Liu, Saiful I. Tamim, Connor W. Magoon, and Pedro J. Sáenz"
+    },
+    {
+      title: "Spontaneous galloping of a vibrating bubble along a solid boundary. <strong>Part 2: Simulations</strong>",
+      authors: "Connor W. Magoon, Saiful I. Tamim, and Pedro J. Sáenz"
+    },
+    {
+      title: "Spontaneous galloping of a vibrating bubble along a solid boundary. <strong>Part 3: Theory</strong>",
+      authors: "Saiful I. Tamim, Connor W. Magoon, and Pedro J. Sáenz"
+    }
+  ]
+};
+
+/* Actual paper title + full author list, shown in the modal for single-paper
+   cards in place of the card's shorthand title/author line. */
+const paperFullInfo = {
+  "dQP: Differentiating Quadratic Programs": {
+    title: "Differentiation Through Black-Box Quadratic Programming Solvers",
+    authors: "Connor W. Magoon<sup>*</sup>, Fengyu Yang<sup>*</sup>, Noam Aigerman, Shahar Z. Kovalsky"
+  },
+  "Galloping Bubbles": {
+    title: "Galloping Bubbles",
+    authors: "Jian H. Guan<sup>*</sup>, Saiful I. Tamim<sup>*</sup>, Connor W. Magoon<sup>*</sup>, Howard A. Stone, Pedro J. Sáenz"
+  },
+  "Traveling Faraday Waves": {
+    title: "Traveling Faraday waves",
+    authors: "Jian H. Guan, Connor W. Magoon, Matthew Durey, Roberto Camassa, Pedro J. Sáenz"
+  },
+  "Confined Polar Active Suspensions": {
+    title: "Confined Polar Active Suspensions",
+    authors: "Connor W. Magoon, David B. Stein, Scott Weady"
+  },
+  "Collective Galloping Bubbles": {
+    title: "Collective Galloping Bubbles",
+    authors: "Connor W. Magoon, Xinyun Liu, Saiful I. Tamim, Pedro J. Sáenz"
+  },
+  "Neural Mappings": {
+    title: "Neural Mappings",
+    authors: "Connor W. Magoon, Fengyu Yang, Noam Aigerman, Shahar Z. Kovalsky"
+  }
 };
 
 function buildPreviewHTML(card) {
@@ -659,6 +763,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var modalContent = modal ? modal.querySelector('.modal-content') : null;
   var modalImg = document.getElementById('modal-img');
   var modalTitle = document.getElementById('modal-title');
+  var modalPaperTitle = document.getElementById('modal-paper-title');
   var modalAuthors = document.getElementById('modal-authors');
   var modalVenue = document.getElementById('modal-venue');
   var modalText = document.getElementById('modal-text');
@@ -669,25 +774,35 @@ document.addEventListener('DOMContentLoaded', function () {
   const research = document.getElementById('research');
   if (!research || !modal || !modalContent || !closeBtn) return;
 
+  function escapeRe(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function formatAuthorsHTML(html, skipHighlight) {
+    if (!skipHighlight) {
+      const magoonAlts = [authorFullNames['Magoon'], 'Magoon'].map(escapeRe).join('|');
+      const magoonRe = new RegExp('(?<![\\wÀ-ɏ])(' + magoonAlts + ')(?![\\wÀ-ɏ])', 'g');
+      html = html.replace(magoonRe, '<span style="color:#4b2ca3;font-weight:bold;">$1</span>');
+    }
+    /* Link other authors — match the full name first (if spelled out), else the short last name */
+    Object.entries(authorLinks).forEach(function ([name, url]) {
+      if (!url) return;
+      const full = authorFullNames[name];
+      const alts = (full ? [full, name] : [name]).map(escapeRe).join('|');
+      const re = new RegExp('(?<![\\wÀ-ɏ])(' + alts + ')(?![\\wÀ-ɏ])', 'g');
+      html = html.replace(re, '<a href="' + url + '" target="_blank" style="color:inherit;text-decoration:none;cursor:pointer;">$1</a>');
+    });
+    return html;
+  }
+
   const targets = research.querySelectorAll('.authors, .series-authors span:not(.label):not(.series-venue)');
 
   targets.forEach(function (el) {
-    let html = el.innerHTML;
     /* Highlight own name in purple, except on ongoing projects */
     const card = el.closest('.project-card');
     const badge = card && card.querySelector('.figure-badge');
     const isOngoing = badge && badge.textContent.trim() === 'Ongoing';
-    if (!isOngoing) {
-      html = html.replace(/(?<![\wÀ-ɏ])(Magoon)(?![\wÀ-ɏ])/g, '<span style="color:#4b2ca3;font-weight:bold;">$1</span>');
-    }
-    /* Link other authors */
-    Object.entries(authorLinks).forEach(function ([name, url]) {
-      if (!url) return;
-      const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const re = new RegExp('(?<![\\wÀ-ɏ])(' + esc + ')(?![\\wÀ-ɏ])', 'g');
-      html = html.replace(re, '<a href="' + url + '" target="_blank" style="color:inherit;text-decoration:none;cursor:pointer;">$1</a>');
-    });
-    el.innerHTML = html;
+    el.innerHTML = formatAuthorsHTML(el.innerHTML, isOngoing);
   });
 
   var activeTrigger = null;
@@ -710,6 +825,23 @@ document.addEventListener('DOMContentLoaded', function () {
     modalContent.dataset.revealCopy = 'false';
   }
 
+  /* Widest single-line width any title/author line in the modal currently needs,
+     so fitModalSize() never shrinks the modal enough to force those onto two lines. */
+  function naturalTextWidth() {
+    var authorLines = modalAuthors.querySelectorAll('p');
+    var candidates = [modalTitle, modalPaperTitle, modalVenue];
+    candidates = candidates.concat(authorLines.length ? Array.from(authorLines) : [modalAuthors]);
+
+    modalContent.classList.add('measuring-width');
+    var width = 0;
+    candidates.forEach(function (el) {
+      if (!el || getComputedStyle(el).display === 'none') return;
+      width = Math.max(width, el.scrollWidth);
+    });
+    modalContent.classList.remove('measuring-width');
+    return width;
+  }
+
   function fitModalSize() {
     var maxW = Math.min(1500, window.innerWidth * 0.96);
     var minW = Math.min(600, maxW);
@@ -718,6 +850,21 @@ document.addEventListener('DOMContentLoaded', function () {
     modalContent.style.transition = 'none';
     modalContent.style.overflow = 'visible';
     modalContent.style.maxHeight = 'none';
+
+    /* On desktop (two-column layout), never shrink narrower than what the
+       longest title/author line needs, so it doesn't wrap unnecessarily. */
+    if (window.innerWidth > 820) {
+      var neededCopyWidth = naturalTextWidth();
+      if (neededCopyWidth) {
+        var mcStyle = getComputedStyle(modalContent);
+        var paddingX = parseFloat(mcStyle.paddingLeft) + parseFloat(mcStyle.paddingRight);
+        var bodyEl = modalContent.querySelector('.modal-body');
+        var bodyStyle = getComputedStyle(bodyEl);
+        var gap = parseFloat(bodyStyle.columnGap || bodyStyle.gap) || 0;
+        var neededTotalWidth = Math.min(maxW, 2 * neededCopyWidth + gap + paddingX);
+        minW = Math.max(minW, neededTotalWidth);
+      }
+    }
 
     function heightAt(w) {
       modalContent.style.width = w + 'px';
@@ -752,11 +899,33 @@ document.addEventListener('DOMContentLoaded', function () {
     var h3 = card ? card.querySelector('h3') : null;
     modalTitle.textContent = h3 ? h3.textContent : '';
     var authors = card ? card.querySelector('.authors') : null;
-    modalAuthors.innerHTML = authors ? authors.innerHTML : '';
+    var fullSeries = seriesFullAuthors[modalTitle.textContent];
+    var paperInfo = paperFullInfo[modalTitle.textContent];
+    var finalAuthorsHTML;
+    if (fullSeries) {
+      modalPaperTitle.style.display = 'none';
+      finalAuthorsHTML = fullSeries.map(function (part) {
+        return '<div class="series-part-full"><p class="series-full-title">' + part.title +
+          '</p><p class="series-full-authors">' + formatAuthorsHTML(part.authors) +
+          '</p><p class="series-full-venue">Submitted</p></div>';
+      }).join('');
+    } else if (paperInfo) {
+      if (paperInfo.title && paperInfo.title !== modalTitle.textContent) {
+        modalPaperTitle.textContent = paperInfo.title;
+        modalPaperTitle.style.display = '';
+      } else {
+        modalPaperTitle.style.display = 'none';
+      }
+      finalAuthorsHTML = formatAuthorsHTML(paperInfo.authors);
+    } else {
+      modalPaperTitle.style.display = 'none';
+      finalAuthorsHTML = authors ? authors.innerHTML : '';
+    }
+    modalAuthors.innerHTML = finalAuthorsHTML;
     var venue = card ? card.querySelector('.venue') : null;
     modalVenue.innerHTML = venue ? venue.innerHTML : '';
     modalVenue.style.display = venue ? '' : 'none';
-    var hasEqual = authors && authors.innerHTML.indexOf('sup') !== -1;
+    var hasEqual = finalAuthorsHTML.indexOf('sup') !== -1;
     modalEqual.style.display = hasEqual ? '' : 'none';
     var links = card ? card.querySelector('.links.pill-links') : null;
     modalPills.innerHTML = links ? links.innerHTML : '';
@@ -765,6 +934,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var previewHTML = buildPreviewHTML(card);
     modalPreviews.innerHTML = previewHTML;
     modalContent.classList.toggle('has-previews', !!previewHTML);
+    modalPreviews.classList.toggle('single-preview', modalPreviews.children.length === 1);
 
     fitModalSize();
 
@@ -898,8 +1068,8 @@ document.addEventListener('DOMContentLoaded', function () {
       <div style="background:#cce5ff; color:#004085; border-radius:10px; padding:0.6rem 0.8rem; font-size:0.85rem; line-height:1.3; border: 1px solid #99ccff;">
         <p style="margin:0.3rem 0 0.3rem 0;"> I am a fourth-year Applied Mathematics PhD student at <a href="https://math.unc.edu/" target="_blank">UNC Chapel Hill</a>. Previously, I received my BS in physics and applied math. </p>
         I have broad interests, spanning understanding physical phenomena to developing mathematical tools for solving applied problems. One central thread sewn through all my work is geometry: leveraging simple geometry as a means for explanation, and tackling complex geometry which is prevalent in the non-ideal real world. 
-        I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/" target="_blank">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me" target="_blank">Prof. Pedro Sáenz</a>, and in the intersection of optimization, machine learning, and graphics with advisor <a href="https://shaharkov.github.io/" target="_blank">Prof. Shahar Kovalsky</a>.
-        <p style="margin:0.3rem 0 0.3rem 0;"> <b>Summer 2026</b>: I am interning as a summer pre-doctoral researcher for the <a href="https://www.simonsfoundation.org/flatiron/" target="_blank">Flatiron Institute</a>, within the <a href="https://users.flatironinstitute.org/~bpm/index.html" target="_blank">biophysical modeling group</a> of the <a href="https://www.simonsfoundation.org/flatiron/center-for-computational-biology/" target="_blank">Center for Computational Biology</a>. </p>
+        I work on simulations and modeling of fluids in the <a href="https://www.pml.unc.edu/" target="_blank">Physical Mathematics Lab</a> under the direction of <a href="https://www.pml.unc.edu/about-me" target="_blank"> Pedro Sáenz</a>, and in the intersection of optimization, machine learning, and graphics with advisor <a href="https://shaharkov.github.io/" target="_blank"> Shahar Kovalsky</a>.
+        <p style="margin:0.3rem 0 0.3rem 0;"> <b></b>During Summer 2026, I interned as a pre-doctoral researcher at the <a href="https://www.simonsfoundation.org/flatiron/" target="_blank">Flatiron Institute</a>, mentored by <a href="https://users.flatironinstitute.org/~sweady/" target="_blank">Scott Weady</a> and <a href="https://users.flatironinstitute.org/~dstein/" target="_blank">David Stein</a> within the <a href="https://users.flatironinstitute.org/~bpm/index.html" target="_blank">biophysical modeling group</a>, developing numerical methods for solving models of confined polar active suspensions. </p>
       </div>
 
       
@@ -950,9 +1120,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- Research -->
 <div class="section section-accent-gray" id="research">
-<div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.5rem;">
+<div style="display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin-bottom:0.5rem;">
 <h2 style="margin-bottom:0;">Research</h2>
-<span style="font-style:italic; font-size:0.85rem; white-space:nowrap;">Click figures to enlarge and display short project descriptions.</span>
+<span style="font-style:italic; font-size:0.85rem;">Click figures to enlarge and display short project descriptions.</span>
 </div>
 
 <div class="projects-grid">
@@ -963,7 +1133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="figure-with-text">
 <img src="/images/galloping_laws.png" class="clickable-figure" style="border-radius:0;">
 <div class="figure-text">
-A deep-dive experimental, numerical, and theoretical follow-up to our initial discovery of galloping bubbles, which are vertically vibrating millimetric-sized bubbles that spontaneously break symmetry and self-propel along a horizontal wall. At their heart is the parametric excitation of symmetrical and asymmetrical shape modes that together generate a non-reciprocal deformation, enabling the bubble to `swim'.
+A deep-dive experimental, numerical, and theoretical follow-up to our initial discovery of galloping bubbles, which are vertically vibrating millimetric-sized bubbles that spontaneously break symmetry and self-propel along a horizontal wall. At their heart is the parametric excitation of symmetrical and asymmetrical shape modes that together generate a non-reciprocal deformation, enabling the bubble to swim.
 </div>
 </div>
 <div class="authors series-parts">
@@ -1019,7 +1189,7 @@ We discover, rationalize, and apply a fluid instability in which a vertically vi
 <div class="figure-with-text">
 <img src="/images/faraday_waves.png" class="clickable-figure">
 <div class="figure-text">
-We present a Faraday wave instability where a vertically vibrated annular bath spontaneously breaks symmetry from standing waves into fast traveling waves. <br> <br> <b>Awarded an APS DFD Gallery of Fluid Motion Award.</b>
+We present a Faraday wave instability where a vertically vibrated annular bath spontaneously breaks symmetry from standing waves into fast traveling waves. <br> <br> <b>Awarded an APS DFD Milton van Dyke Award.</b>
 </div>
 </div>
 <p class="authors">Guan, Magoon, Durey, Camassa, Sáenz</p>
@@ -1030,14 +1200,32 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 </div>
 </div>
 
+<!-- Confined Polar Active Suspensions -->
+<div class="project-card">
+<h3>Confined Polar Active Suspensions</h3>
+<div class="figure-with-text">
+<img src="/images/polar_active_suspension.png" class="clickable-figure">
+<div class="figure-text">
+We model biological systems comprised of microscale active swimmers, which collectively exert large-scale stresses on the fluid in which they swim to generate striking emergent dynamics.
+</div>
+</div>
+<p class="authors">Magoon, Stein, Weady</p>
+<div class="links pill-links">
+<span class="pill">Ongoing</span>
+<a class="pill" href="/images/connor_flatiron_2026_poster.png" target="_blank">Poster</a>
+</div>
+</div>
+
 <!-- Collective -->
 <div class="project-card">
 <h3>Collective Galloping Bubbles</h3>
 <div class="figure-with-text">
 <img src="/images/collective_bubbles_flow.png" class="clickable-figure">
-<div class="figure-text"></div>
+<div class="figure-text">
+Building on our discovery of galloping bubbles, we comprehensively investigate their collective dynamics in the dilute regime, providing a framework for understanding how shape deformation and hydrodynamic interactions govern many-body dynamics. We thus connect collective hydrodynamic phenomena in deformable, wet active matter systems to the controlled transport of bubbles.
 </div>
-<p class="authors">Magoon, Liu, Guan, Tamim, Stone, Sáenz</p>
+</div>
+<p class="authors">Magoon, Liu, Tamim, Sáenz</p>
 <div class="links pill-links">
 <span class="pill">Ongoing</span>
 </div>
@@ -1048,7 +1236,9 @@ We present a Faraday wave instability where a vertically vibrated annular bath s
 <h3>Neural Mappings</h3>
 <div class="figure-with-text">
 <img src="/images/ant_mapping.png" class="clickable-figure">
-<div class="figure-text"></div>
+<div class="figure-text">
+We explore applications of differentiable optimization in classic computational geometry tasks.
+</div>
 </div>
 <p class="authors">Magoon, Yang, Aigerman, Kovalsky</p>
 <div class="links pill-links">
