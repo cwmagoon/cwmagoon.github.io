@@ -1,0 +1,30 @@
+Starting Website preview
+Choosing a shared Windows/WSL port
+Starting Jekyll on localhost:51105
+LABORG_JEKYLL_PID=386201
+Configuration file: _config.yml
+Configuration file: _config.dev.yml
+To use retry middleware with Faraday v2.0+, install `faraday-retry` gem
+            Source: /home/connorwm/repos/cwmagoon.github.io
+       Destination: /home/connorwm/repos/cwmagoon.github.io/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating... 
+       Jekyll Feed: Generating feed for posts
+[33m   GitHub Metadata: No GitHub API authentication could be found. Some fields may be missing or have incorrect data.[0m
+                    done in 3.897 seconds.
+[33m                    Auto-regeneration may not work on some Windows versions.[0m
+[33m                    Please see: https://github.com/Microsoft/BashOnWindows/issues/216[0m
+[33m                    If it does not work, please upgrade Bash on Windows or run Jekyll with --no-watch.[0m
+ Auto-regeneration: enabled for '/home/connorwm/repos/cwmagoon.github.io'
+    Server address: http://127.0.0.1:51105/
+  Server running... press ctrl-c to stop.
+[Website browser] Starting host for http://localhost:51105
+[Website browser] Initializing WebView2 after parenting
+[Website browser] Attached native browser
+[Website browser] Page loaded: http://localhost:51105/
+[Website browser] Element picker injected
+Stopping Jekyll process group
+setsid: child 386201 did not exit normally: No such file or directory
+Stopping Jekyll process group
+kill: (-386201): No such process
+Jekyll exited with status 15
