@@ -1,0 +1,5 @@
+# Local preview overrides
+url: http://localhost:4000
+
+sass:
+  style: expanded

@@ -1,0 +1,59 @@
+# Site settings
+locale           : "en-US"
+title            : "Connor Magoon"
+title_separator  : "-"
+name             : "Connor Magoon"
+description      : "Applied mathematics PhD student at The University of North Carolina at Chapel Hill"
+url              : "https://cwmagoon.github.io"
+baseurl          : ""
+repository       : "cwmagoon/cwmagoon.github.io"
+og_image         : "/images/profile.jpeg"
+same_as:
+  - "https://github.com/cwmagoon"
+  - "https://orcid.org/0009-0009-1890-3279"
+  - "https://scholar.google.com/citations?user=18F4sZMAAAAJ"
+  - "https://www.linkedin.com/in/connor-magoon-3189a9384"
+
+# Reading files
+include:
+  - _pages
+  - googleccfaee81dd6b922b.html
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENSE
+  - vendor
+  - hidden
+
+# Conversion
+markdown: kramdown
+kramdown:
+  input: GFM
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+
+# Sass/SCSS
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Outputting
+timezone: America/New_York
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-redirect-from
+
+# HTML compression
+compress_html:
+  clippings: all
+  ignore:
+    envs: development
