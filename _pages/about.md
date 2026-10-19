@@ -525,6 +525,8 @@ redirect_from:
   .poster-prev { left: 0.6rem; }
   .poster-next { right: 0.6rem; }
 
+{% include poster_pan.css %}
+
   /* Touch: larger arrow hitboxes */
   .poster-nav::after {
     content: "";
@@ -729,6 +731,10 @@ function setPosterStep(box, step) {
   box.dataset.step = step;
   var prev = box.querySelector('.poster-prev');
   if (prev) prev.hidden = step < 0;
+  var bar = box.querySelector('.poster-pan');
+  if (bar && !box._panReady) { posterPanSetup(box, img, bar); box._panReady = true; }
+  box._pan = null;
+  if (bar) bar.hidden = true;
   /* Zoomed panels hide the rest of the popout; the poster becomes its only content */
   box.classList.toggle('poster-expanded', step >= 0);
   var mc = box.closest('.modal-content');
@@ -750,9 +756,19 @@ function setPosterStep(box, step) {
   box.style.height = boxH + 'px';
   /* Each panel is fit and centred in the box */
   var p = panels[step];
-  var s = Math.min(0.94 / p[2], 0.94 * boxH / (p[3] * H0));
+  var sw = 0.94 / p[2], sh = 0.94 * boxH / (p[3] * H0);
+  var s = Math.min(sw, sh);
   var tx = W / 2 - (p[0] + p[2] / 2) * s * W;
+  if (bar && posterIsWide(p, H0 / W)) {
+    s = Math.min(sh, 2 * sw);
+    box._pan = posterPanRange(p, s, W, W);
+    tx = box._pan.left;
+  }
   var ty = boxH / 2 - (p[1] + p[3] / 2) * s * H0;
+  if (box._pan) {
+    box._pan.ty = ty; box._pan.s = s; box._pan.f = 0;
+    bar.value = 0; bar.hidden = false;
+  }
   img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
 }
 
@@ -842,7 +858,8 @@ function buildPreviewHTML(card) {
     if (item.type === 'poster') {
       var nav = posterPanels[title] ?
         '<button type="button" class="poster-nav poster-prev" aria-label="Previous panel" hidden>&#8249;</button>' +
-        '<button type="button" class="poster-nav poster-next" aria-label="Next panel">&#8250;</button>' : '';
+        '<button type="button" class="poster-nav poster-next" aria-label="Next panel">&#8250;</button>' +
+        '<input type="range" class="poster-pan" min="0" max="1000" value="0" aria-label="Pan across panel" hidden>' : '';
       return '<div class="preview-box preview-poster" data-poster="' + title.replace(/"/g, '&quot;') + '" data-step="-1">' +
         '<a href="' + href + '" target="_blank"><img src="' + (posterPreviewSrc[title] || href) + '" alt="Poster" decoding="async"></a>' + nav + '</div>';
     }

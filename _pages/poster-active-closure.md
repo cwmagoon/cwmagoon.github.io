@@ -44,6 +44,8 @@ sitemap: false
   .poster-nav[hidden] { display: none; }
   .poster-prev { left: 0.75rem; }
   .poster-next { right: 0.75rem; }
+{% include poster_pan.css %}
+  .poster-pan { position: fixed; bottom: 2.4rem; }
   .poster-links {
     position: fixed;
     right: 0.75rem;
@@ -66,6 +68,7 @@ sitemap: false
 </div>
 <button type="button" class="poster-nav poster-prev" id="poster-prev" aria-label="Previous panel" hidden>&#8249;</button>
 <button type="button" class="poster-nav poster-next" id="poster-next" aria-label="Next panel">&#8250;</button>
+<input type="range" class="poster-pan" id="poster-pan" min="0" max="1000" value="0" aria-label="Pan across panel" hidden>
 <div class="poster-links">
   <a href="/images/connor_flatiron_2026_poster.png">Full resolution</a>
   <a href="/">Home</a>
@@ -78,7 +81,10 @@ sitemap: false
   var panels = posterPanels["Confined Polar Active Suspensions"];
   var img = document.getElementById('poster-img');
   var prev = document.getElementById('poster-prev');
+  var bar = document.getElementById('poster-pan');
+  var stage = document.getElementById('poster-stage');
   var step = -1;
+  posterPanSetup(stage, img, bar);
 
   /* Step -1 fits the whole poster; step i fits panel i, centred in the window */
   function show(next, animate) {
@@ -91,9 +97,21 @@ sitemap: false
     var W = Math.min(VW, VH / aspect), H = W * aspect;
     var p = step < 0 ? [0, 0, 1, 1] : panels[step];
     var fill = step < 0 ? 0.96 : 0.94;
-    var s = Math.min(fill * VW / (p[2] * W), fill * VH / (p[3] * H));
+    var sw = fill * VW / (p[2] * W), sh = fill * VH / (p[3] * H);
+    var s = Math.min(sw, sh);
     var tx = VW / 2 - (p[0] + p[2] / 2) * s * W;
+    stage._pan = null;
+    bar.hidden = true;
+    if (step >= 0 && posterIsWide(p, aspect)) {
+      s = Math.min(sh, 2 * sw);
+      stage._pan = posterPanRange(p, s, VW, W);
+      tx = stage._pan.left;
+    }
     var ty = VH / 2 - (p[1] + p[3] / 2) * s * H;
+    if (stage._pan) {
+      stage._pan.ty = ty; stage._pan.s = s; stage._pan.f = 0;
+      bar.value = 0; bar.hidden = false;
+    }
     img.style.transition = animate ? '' : 'none';
     img.style.width = W + 'px';
     img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
