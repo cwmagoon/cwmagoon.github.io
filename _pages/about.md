@@ -533,6 +533,12 @@ redirect_from:
     .poster-nav::after { inset: -0.8rem; }
   }
 
+  .modal-previews .preview-box.poster-expanded {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 100% !important;
+  }
+
   .preview-paper {
     display: flex;
     flex-direction: column;
@@ -732,6 +738,8 @@ function setPosterStep(box, step) {
   box.dataset.step = step;
   var prev = box.querySelector('.poster-prev');
   if (prev) prev.hidden = step < 0;
+  /* Zoomed panels take the whole popout width, not just the poster's column */
+  box.classList.toggle('poster-expanded', step >= 0);
   var H0 = img.clientHeight, W = box.clientWidth;
   clearTimeout(box._posterTimer);
   var ease = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
