@@ -478,7 +478,7 @@ redirect_from:
 
   .preview-poster {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     min-height: 160px;
     cursor: pointer;
@@ -519,69 +519,18 @@ redirect_from:
 
   .poster-nav[hidden] { display: none; }
   .poster-nav:hover { opacity: 1; background: rgba(30, 30, 40, 0.85); }
-  .poster-pan {
-    position: absolute;
-    left: 5%;
-    right: 5%;
-    bottom: 0.5rem;
-    width: 90%;
-    margin: 0;
-    height: 1rem;
-    accent-color: #4a4f66;
-    cursor: pointer;
-  }
-
-  .poster-pan[hidden] { display: none; }
   .poster-prev { left: 0.6rem; }
   .poster-next { right: 0.6rem; }
 
-  /* Touch: larger arrows and a tall, easy-to-grab pan bar */
+  /* Touch: larger arrow hitboxes */
   .poster-nav::after {
     content: "";
     position: absolute;
     inset: -0.6rem;
   }
-  .poster-pan { touch-action: pan-x; -webkit-tap-highlight-color: transparent; }
   @media (pointer: coarse) {
     .poster-nav { width: 3rem; height: 3rem; }
     .poster-nav::after { inset: -0.8rem; }
-    .poster-pan {
-      left: 3%;
-      width: 94%;
-      bottom: 0.3rem;
-      height: 3rem;
-      padding: 0;
-      -webkit-appearance: none;
-      appearance: none;
-      background: transparent;
-    }
-    .poster-pan::-webkit-slider-runnable-track {
-      height: 0.5rem;
-      border-radius: 0.25rem;
-      background: rgba(30, 30, 40, 0.55);
-    }
-    .poster-pan::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 2.2rem;
-      height: 2.2rem;
-      margin-top: -0.85rem;
-      border-radius: 50%;
-      background: #fff;
-      border: 2px solid #4a4f66;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-    }
-    .poster-pan::-moz-range-track {
-      height: 0.5rem;
-      border-radius: 0.25rem;
-      background: rgba(30, 30, 40, 0.55);
-    }
-    .poster-pan::-moz-range-thumb {
-      width: 2.2rem;
-      height: 2.2rem;
-      border-radius: 50%;
-      background: #fff;
-      border: 2px solid #4a4f66;
-    }
   }
 
   .preview-paper {
@@ -783,31 +732,28 @@ function setPosterStep(box, step) {
   box.dataset.step = step;
   var prev = box.querySelector('.poster-prev');
   if (prev) prev.hidden = step < 0;
-  var pan = box.querySelector('.poster-pan');
-  if (pan) pan.hidden = true;
+  var H0 = img.clientHeight, W = box.clientWidth;
+  clearTimeout(box._posterTimer);
+  var ease = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
   img.style.transformOrigin = '0 0';
-  img.style.transition = 'transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)';
-  if (step < 0) { img.style.transform = ''; return; }
-  var p = panels[step];
-  var W = box.clientWidth, H = img.clientHeight;
-  var sw = 0.94 / p[2], sh = 0.94 / p[3];
-  var wide = sh > 1.5 * sw;
-  /* Wide panels stay zoomed in; the bar pans across their width */
-  var s = wide ? Math.min(sh, 3) : Math.min(sw, sh);
-  var tx = W / 2 - (p[0] + p[2] / 2) * s * W;
-  var ty = H / 2 - (p[1] + p[3] / 2) * s * H;
-  if (wide && pan) {
-    var left = 0.03 * W - p[0] * s * W;
-    var right = 0.97 * W - (p[0] + p[2]) * s * W;
-    pan.hidden = false;
-    pan.value = 0;
-    pan.oninput = function () {
-      img.style.transition = 'none';
-      var tx2 = left + (right - left) * pan.value / 1000;
-      img.style.transform = 'translate(' + tx2 + 'px,' + ty + 'px) scale(' + s + ')';
-    };
-    tx = left;
+  img.style.transition = 'transform 0.6s ' + ease;
+  box.style.transition = 'height 0.6s ' + ease;
+  if (step < 0) {
+    img.style.transform = '';
+    box.style.height = H0 + 'px';
+    box._posterTimer = setTimeout(function () { box.style.height = ''; }, 650);
+    return;
   }
+  /* The box resizes so the selected panel fills its full width */
+  var p = panels[step];
+  var s = 0.96 / p[2];
+  var pad = 0.02 * W;
+  var boxH = p[3] * s * H0 + 2 * pad;
+  if (!box.style.height) box.style.height = H0 + 'px';
+  box.offsetHeight;
+  box.style.height = boxH + 'px';
+  var tx = W / 2 - (p[0] + p[2] / 2) * s * W;
+  var ty = pad - p[1] * s * H0;
   img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
 }
 
@@ -897,8 +843,7 @@ function buildPreviewHTML(card) {
     if (item.type === 'poster') {
       var nav = posterPanels[title] ?
         '<button type="button" class="poster-nav poster-prev" aria-label="Previous panel" hidden>&#8249;</button>' +
-        '<button type="button" class="poster-nav poster-next" aria-label="Next panel">&#8250;</button>' +
-        '<input type="range" class="poster-pan" min="0" max="1000" value="0" aria-label="Pan across panel" hidden>' : '';
+        '<button type="button" class="poster-nav poster-next" aria-label="Next panel">&#8250;</button>' : '';
       return '<div class="preview-box preview-poster" data-poster="' + title.replace(/"/g, '&quot;') + '" data-step="-1">' +
         '<a href="' + href + '" target="_blank"><img src="' + (posterPreviewSrc[title] || href) + '" alt="Poster" decoding="async"></a>' + nav + '</div>';
     }
