@@ -766,6 +766,12 @@ const posterPanels = {
   ]
 };
 
+/* Local downscaled copies: iOS blurs very large images when zoomed */
+const posterPreviewSrc = {
+  "dQP: Differentiating Quadratic Programs": "/images/dqp_neurips_2025_poster_preview.jpg",
+  "Confined Polar Active Suspensions": "/images/connor_flatiron_2026_poster_preview.jpg"
+};
+
 /* Step -1 shows the whole poster; step i zooms to panel i */
 function setPosterStep(box, step) {
   var panels = posterPanels[box.dataset.poster];
@@ -894,7 +900,7 @@ function buildPreviewHTML(card) {
         '<button type="button" class="poster-nav poster-next" aria-label="Next panel">&#8250;</button>' +
         '<input type="range" class="poster-pan" min="0" max="1000" value="0" aria-label="Pan across panel" hidden>' : '';
       return '<div class="preview-box preview-poster" data-poster="' + title.replace(/"/g, '&quot;') + '" data-step="-1">' +
-        '<a href="' + href + '" target="_blank"><img src="' + href.replace('_poster.png', '_poster_preview.jpg') + '" alt="Poster" decoding="async"></a>' + nav + '</div>';
+        '<a href="' + href + '" target="_blank"><img src="' + (posterPreviewSrc[title] || href) + '" alt="Poster" decoding="async"></a>' + nav + '</div>';
     }
     var paperImg = paperPreviewImages[title];
     if (paperImg) {
