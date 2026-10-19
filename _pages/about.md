@@ -551,11 +551,6 @@ redirect_from:
     margin-top: 0;
   }
 
-  .modal-content.poster-focus .preview-poster {
-    align-items: flex-start;
-    background: #fff;
-  }
-
   .preview-paper {
     display: flex;
     flex-direction: column;
@@ -715,28 +710,7 @@ const modalPreviewConfig = {
   ]
 };
 
-/* Poster panels as fractions of the image [x, y, w, h], in reading order.
-   Arrows on the poster zoom to each panel in turn. */
-const posterPanels = {
-  "dQP: Differentiating Quadratic Programs": [
-    [0.013, 0.156, 0.267, 0.296],
-    [0.296, 0.156, 0.184, 0.296],
-    [0.486, 0.156, 0.498, 0.296],
-    [0.013, 0.463, 0.267, 0.294],
-    [0.296, 0.463, 0.688, 0.294],
-    [0.013, 0.770, 0.971, 0.210]
-  ],
-  "Confined Polar Active Suspensions": [
-    [0.017, 0.136, 0.306, 0.245],
-    [0.017, 0.431, 0.306, 0.243],
-    [0.017, 0.723, 0.306, 0.245],
-    [0.347, 0.136, 0.306, 0.245],
-    [0.347, 0.431, 0.306, 0.243],
-    [0.347, 0.723, 0.306, 0.245],
-    [0.675, 0.136, 0.306, 0.408],
-    [0.675, 0.561, 0.306, 0.410]
-  ]
-};
+{% include poster_panels.js %}
 
 /* Local downscaled copies: iOS blurs very large images when zoomed */
 const posterPreviewSrc = {
@@ -762,10 +736,9 @@ function setPosterStep(box, step) {
   var W = img.clientWidth, H0 = W * img.naturalHeight / img.naturalWidth;
   var ease = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
   img.style.transformOrigin = '0 0';
-  img.style.transition = 'transform 0.6s ' + ease + ', clip-path 0.6s ' + ease;
+  img.style.transition = 'transform 0.6s ' + ease;
   if (step < 0) {
     img.style.transform = '';
-    img.style.clipPath = '';
     box.style.height = '';
     return;
   }
@@ -775,13 +748,11 @@ function setPosterStep(box, step) {
   panels.forEach(function (q) { boxH = Math.max(boxH, 0.94 * q[3] * H0 / q[2]); });
   boxH = Math.min(boxH, 0.8 * window.innerHeight);
   box.style.height = boxH + 'px';
-  /* Each panel is fit and centred in the box; the rest of the poster is clipped */
+  /* Each panel is fit and centred in the box */
   var p = panels[step];
   var s = Math.min(0.94 / p[2], 0.94 * boxH / (p[3] * H0));
   var tx = W / 2 - (p[0] + p[2] / 2) * s * W;
   var ty = boxH / 2 - (p[1] + p[3] / 2) * s * H0;
-  img.style.clipPath = 'inset(' + 100 * p[1] + '% ' + 100 * (1 - p[0] - p[2]) + '% ' +
-    100 * (1 - p[1] - p[3]) + '% ' + 100 * p[0] + '%)';
   img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
 }
 
@@ -1349,7 +1320,7 @@ We model biological systems comprised of microscale active swimmers, which colle
 <p class="authors">Magoon, Stein, Weady</p>
 <div class="links pill-links">
 <span class="pill">Ongoing</span>
-<a class="pill" href="/images/connor_flatiron_2026_poster.png" target="_blank">Poster</a>
+<a class="pill" href="/posters/active-closure/" target="_blank">Poster</a>
 </div>
 </div>
 
