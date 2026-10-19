@@ -535,6 +535,55 @@ redirect_from:
   .poster-prev { left: 0.6rem; }
   .poster-next { right: 0.6rem; }
 
+  /* Touch: larger arrows and a tall, easy-to-grab pan bar */
+  .poster-nav::after {
+    content: "";
+    position: absolute;
+    inset: -0.6rem;
+  }
+  .poster-pan { touch-action: pan-x; -webkit-tap-highlight-color: transparent; }
+  @media (pointer: coarse) {
+    .poster-nav { width: 3rem; height: 3rem; }
+    .poster-nav::after { inset: -0.8rem; }
+    .poster-pan {
+      left: 3%;
+      width: 94%;
+      bottom: 0.3rem;
+      height: 3rem;
+      padding: 0;
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+    }
+    .poster-pan::-webkit-slider-runnable-track {
+      height: 0.5rem;
+      border-radius: 0.25rem;
+      background: rgba(30, 30, 40, 0.55);
+    }
+    .poster-pan::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 2.2rem;
+      height: 2.2rem;
+      margin-top: -0.85rem;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #4a4f66;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    }
+    .poster-pan::-moz-range-track {
+      height: 0.5rem;
+      border-radius: 0.25rem;
+      background: rgba(30, 30, 40, 0.55);
+    }
+    .poster-pan::-moz-range-thumb {
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #4a4f66;
+    }
+  }
+
   .preview-paper {
     display: flex;
     flex-direction: column;
@@ -845,7 +894,7 @@ function buildPreviewHTML(card) {
         '<button type="button" class="poster-nav poster-next" aria-label="Next panel">&#8250;</button>' +
         '<input type="range" class="poster-pan" min="0" max="1000" value="0" aria-label="Pan across panel" hidden>' : '';
       return '<div class="preview-box preview-poster" data-poster="' + title.replace(/"/g, '&quot;') + '" data-step="-1">' +
-        '<a href="' + href + '" target="_blank"><img src="' + href + '" alt="Poster"></a>' + nav + '</div>';
+        '<a href="' + href + '" target="_blank"><img src="' + href.replace('_poster.png', '_poster_preview.jpg') + '" alt="Poster" decoding="async"></a>' + nav + '</div>';
     }
     var paperImg = paperPreviewImages[title];
     if (paperImg) {
