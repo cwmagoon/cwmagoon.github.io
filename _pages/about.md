@@ -496,6 +496,9 @@ redirect_from:
   .preview-poster img {
     width: 100%;
     height: auto;
+    max-height: none;
+    object-fit: fill;
+    will-change: auto;
     display: block;
   }
 
@@ -535,8 +538,17 @@ redirect_from:
 
   .modal-previews .preview-box.poster-expanded {
     grid-column: 1 / -1;
-    width: 100%;
+    margin: 0 auto;
     max-width: 100% !important;
+  }
+
+  .modal-content.poster-focus .modal-body,
+  .modal-content.poster-focus .modal-previews > :not(.poster-expanded) {
+    display: none;
+  }
+
+  .modal-content.poster-focus .modal-previews {
+    margin-top: 0;
   }
 
   .preview-paper {
@@ -738,9 +750,13 @@ function setPosterStep(box, step) {
   box.dataset.step = step;
   var prev = box.querySelector('.poster-prev');
   if (prev) prev.hidden = step < 0;
-  /* Zoomed panels take the whole popout width, not just the poster's column */
+  /* Zoomed panels hide the rest of the popout; the poster becomes its only content */
   box.classList.toggle('poster-expanded', step >= 0);
-  var H0 = img.clientHeight, W = box.clientWidth;
+  var mc = box.closest('.modal-content');
+  if (mc) mc.classList.toggle('poster-focus', step >= 0);
+  box.style.width = '';
+  img.style.width = '';
+  var W = img.clientWidth, H0 = W * img.naturalHeight / img.naturalWidth;
   clearTimeout(box._posterTimer);
   var ease = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
   img.style.transformOrigin = '0 0';
@@ -754,13 +770,17 @@ function setPosterStep(box, step) {
   }
   /* The box resizes so the selected panel fills its full width */
   var p = panels[step];
-  var s = 0.96 / p[2];
   var pad = 0.02 * W;
+  var s = Math.min(0.96 / p[2], (0.86 * window.innerHeight - 2 * pad) / (p[3] * H0));
   var boxH = p[3] * s * H0 + 2 * pad;
+  /* Height-limited panels get a box as narrow as the panel, so neighbours stay hidden */
+  var boxW = Math.min(W, p[2] * s * W + 2 * pad);
+  img.style.width = W + 'px';
+  box.style.width = boxW + 'px';
   if (!box.style.height) box.style.height = H0 + 'px';
   box.offsetHeight;
   box.style.height = boxH + 'px';
-  var tx = W / 2 - (p[0] + p[2] / 2) * s * W;
+  var tx = boxW / 2 - (p[0] + p[2] / 2) * s * W;
   var ty = pad - p[1] * s * H0;
   img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
 }
@@ -1049,6 +1069,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var previewHTML = buildPreviewHTML(card);
     modalPreviews.innerHTML = previewHTML;
+    modalContent.classList.remove('poster-focus');
     modalContent.classList.toggle('has-previews', !!previewHTML);
     modalPreviews.classList.toggle('single-preview', modalPreviews.children.length === 1);
 
