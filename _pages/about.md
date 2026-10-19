@@ -538,7 +538,7 @@ redirect_from:
 
   .modal-previews .preview-box.poster-expanded {
     grid-column: 1 / -1;
-    margin: 0 auto;
+    width: 100%;
     max-width: 100% !important;
   }
 
@@ -549,6 +549,11 @@ redirect_from:
 
   .modal-content.poster-focus .modal-previews {
     margin-top: 0;
+  }
+
+  .modal-content.poster-focus .preview-poster {
+    align-items: flex-start;
+    background: #fff;
   }
 
   .preview-paper {
@@ -754,34 +759,29 @@ function setPosterStep(box, step) {
   box.classList.toggle('poster-expanded', step >= 0);
   var mc = box.closest('.modal-content');
   if (mc) mc.classList.toggle('poster-focus', step >= 0);
-  box.style.width = '';
-  img.style.width = '';
   var W = img.clientWidth, H0 = W * img.naturalHeight / img.naturalWidth;
-  clearTimeout(box._posterTimer);
   var ease = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
   img.style.transformOrigin = '0 0';
-  img.style.transition = 'transform 0.6s ' + ease;
-  box.style.transition = 'height 0.6s ' + ease;
+  img.style.transition = 'transform 0.6s ' + ease + ', clip-path 0.6s ' + ease;
   if (step < 0) {
     img.style.transform = '';
-    box.style.height = H0 + 'px';
-    box._posterTimer = setTimeout(function () { box.style.height = ''; }, 650);
+    img.style.clipPath = '';
+    box.style.height = '';
     return;
   }
-  /* The box resizes so the selected panel fills its full width */
-  var p = panels[step];
-  var pad = 0.02 * W;
-  var s = Math.min(0.96 / p[2], (0.86 * window.innerHeight - 2 * pad) / (p[3] * H0));
-  var boxH = p[3] * s * H0 + 2 * pad;
-  /* Height-limited panels get a box as narrow as the panel, so neighbours stay hidden */
-  var boxW = Math.min(W, p[2] * s * W + 2 * pad);
-  img.style.width = W + 'px';
-  box.style.width = boxW + 'px';
-  if (!box.style.height) box.style.height = H0 + 'px';
-  box.offsetHeight;
+  /* Fixed box for every panel: tall enough for the tallest width-filling panel,
+     capped by the window, so the arrows never move */
+  var boxH = 0;
+  panels.forEach(function (q) { boxH = Math.max(boxH, 0.94 * q[3] * H0 / q[2]); });
+  boxH = Math.min(boxH, 0.8 * window.innerHeight);
   box.style.height = boxH + 'px';
-  var tx = boxW / 2 - (p[0] + p[2] / 2) * s * W;
-  var ty = pad - p[1] * s * H0;
+  /* Each panel is fit and centred in the box; the rest of the poster is clipped */
+  var p = panels[step];
+  var s = Math.min(0.94 / p[2], 0.94 * boxH / (p[3] * H0));
+  var tx = W / 2 - (p[0] + p[2] / 2) * s * W;
+  var ty = boxH / 2 - (p[1] + p[3] / 2) * s * H0;
+  img.style.clipPath = 'inset(' + 100 * p[1] + '% ' + 100 * (1 - p[0] - p[2]) + '% ' +
+    100 * (1 - p[1] - p[3]) + '% ' + 100 * p[0] + '%)';
   img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
 }
 
