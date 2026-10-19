@@ -484,11 +484,56 @@ redirect_from:
     cursor: pointer;
   }
 
+  .preview-poster {
+    position: relative;
+  }
+
+  .preview-poster > a {
+    display: block;
+    width: 100%;
+  }
+
   .preview-poster img {
     width: 100%;
     height: auto;
     display: block;
   }
+
+  .poster-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(30, 30, 40, 0.62);
+    color: #fff;
+    font-size: 1.7rem;
+    line-height: 1;
+    padding: 0 0 0.2rem;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.15s, background 0.15s;
+  }
+
+  .poster-nav[hidden] { display: none; }
+  .poster-nav:hover { opacity: 1; background: rgba(30, 30, 40, 0.85); }
+  .poster-pan {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    bottom: 0.5rem;
+    width: 90%;
+    margin: 0;
+    height: 1rem;
+    accent-color: #4a4f66;
+    cursor: pointer;
+  }
+
+  .poster-pan[hidden] { display: none; }
+  .poster-prev { left: 0.6rem; }
+  .poster-next { right: 0.6rem; }
 
   .preview-paper {
     display: flex;
@@ -649,6 +694,68 @@ const modalPreviewConfig = {
   ]
 };
 
+/* Poster panels as fractions of the image [x, y, w, h], in reading order.
+   Arrows on the poster zoom to each panel in turn. */
+const posterPanels = {
+  "dQP: Differentiating Quadratic Programs": [
+    [0.013, 0.156, 0.267, 0.296],
+    [0.296, 0.156, 0.184, 0.296],
+    [0.486, 0.156, 0.498, 0.296],
+    [0.013, 0.463, 0.267, 0.294],
+    [0.296, 0.463, 0.688, 0.294],
+    [0.013, 0.770, 0.971, 0.210]
+  ],
+  "Confined Polar Active Suspensions": [
+    [0.017, 0.136, 0.306, 0.245],
+    [0.017, 0.431, 0.306, 0.243],
+    [0.017, 0.723, 0.306, 0.245],
+    [0.347, 0.136, 0.306, 0.245],
+    [0.347, 0.431, 0.306, 0.243],
+    [0.347, 0.723, 0.306, 0.245],
+    [0.675, 0.136, 0.306, 0.408],
+    [0.675, 0.561, 0.306, 0.410]
+  ]
+};
+
+/* Step -1 shows the whole poster; step i zooms to panel i */
+function setPosterStep(box, step) {
+  var panels = posterPanels[box.dataset.poster];
+  var img = box.querySelector('img');
+  if (!panels || !img) return;
+  var n = panels.length;
+  if (step >= n) step = -1;
+  if (step < -1) step = -1;
+  box.dataset.step = step;
+  var prev = box.querySelector('.poster-prev');
+  if (prev) prev.hidden = step < 0;
+  var pan = box.querySelector('.poster-pan');
+  if (pan) pan.hidden = true;
+  img.style.transformOrigin = '0 0';
+  img.style.transition = 'transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)';
+  if (step < 0) { img.style.transform = ''; return; }
+  var p = panels[step];
+  var W = box.clientWidth, H = img.clientHeight;
+  var sw = 0.94 / p[2], sh = 0.94 / p[3];
+  var wide = sh > 1.5 * sw;
+  /* Wide panels stay zoomed in; the bar pans across their width */
+  var s = wide ? Math.min(sh, 3) : Math.min(sw, sh);
+  var tx = W / 2 - (p[0] + p[2] / 2) * s * W;
+  var ty = H / 2 - (p[1] + p[3] / 2) * s * H;
+  if (wide && pan) {
+    var left = 0.03 * W - p[0] * s * W;
+    var right = 0.97 * W - (p[0] + p[2]) * s * W;
+    pan.hidden = false;
+    pan.value = 0;
+    pan.oninput = function () {
+      img.style.transition = 'none';
+      var tx2 = left + (right - left) * pan.value / 1000;
+      img.style.transform = 'translate(' + tx2 + 'px,' + ty + 'px) scale(' + s + ')';
+    };
+    tx = left;
+  }
+  img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
+}
+
 function getYouTubeEmbedUrl(url, startSeconds) {
   var idMatch = url.match(/(?:youtu\.be\/|[?&]v=)([^&]+)/);
   var id = idMatch ? idMatch[1] : '';
@@ -733,7 +840,12 @@ function buildPreviewHTML(card) {
         '" title="Video preview" allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
     }
     if (item.type === 'poster') {
-      return '<a class="preview-box preview-poster" href="' + href + '" target="_blank"><img src="' + href + '" alt="Poster"></a>';
+      var nav = posterPanels[title] ?
+        '<button type="button" class="poster-nav poster-prev" aria-label="Previous panel" hidden>&#8249;</button>' +
+        '<button type="button" class="poster-nav poster-next" aria-label="Next panel">&#8250;</button>' +
+        '<input type="range" class="poster-pan" min="0" max="1000" value="0" aria-label="Pan across panel" hidden>' : '';
+      return '<div class="preview-box preview-poster" data-poster="' + title.replace(/"/g, '&quot;') + '" data-step="-1">' +
+        '<a href="' + href + '" target="_blank"><img src="' + href + '" alt="Poster"></a>' + nav + '</div>';
     }
     var paperImg = paperPreviewImages[title];
     if (paperImg) {
@@ -791,6 +903,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const badge = card && card.querySelector('.figure-badge');
     const isOngoing = badge && badge.textContent.trim() === 'Ongoing';
     el.innerHTML = formatAuthorsHTML(el.innerHTML, isOngoing);
+  });
+
+  modalPreviews.addEventListener('click', function (e) {
+    var btn = e.target.closest('.poster-nav');
+    if (!btn) return;
+    var box = btn.closest('.preview-poster');
+    var step = parseInt(box.dataset.step, 10);
+    setPosterStep(box, btn.classList.contains('poster-next') ? step + 1 : step - 1);
   });
 
   var activeTrigger = null;
